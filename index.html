@@ -25,9 +25,7 @@
       --purple: #a78bfa;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -124,7 +122,6 @@
       letter-spacing: 0.24em;
       font-weight: 800;
       text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
-      position: relative;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -199,33 +196,32 @@
       100% { transform: translateX(120%); }
     }
 
-    .pulse-item span {
+    .pulse-item span,
+    .pulse-item b,
+    .pulse-item em {
+      position: relative;
+      z-index: 2;
       display: block;
+    }
+
+    .pulse-item span {
       color: var(--muted);
       font-size: 11px;
       letter-spacing: 0.12em;
       font-weight: 850;
-      position: relative;
-      z-index: 2;
     }
 
     .pulse-item b {
-      display: block;
       margin-top: 6px;
       font-size: 18px;
       letter-spacing: -0.04em;
-      position: relative;
-      z-index: 2;
     }
 
     .pulse-item em {
-      display: block;
       margin-top: 4px;
       font-style: normal;
       font-size: 11px;
       font-weight: 900;
-      position: relative;
-      z-index: 2;
     }
 
     .module {
@@ -315,6 +311,42 @@
       white-space: nowrap;
     }
 
+    .panel,
+    .tile,
+    .mini,
+    .metric,
+    .heat,
+    .fomc-date-card,
+    .fomc-vote-card,
+    .pulse-item,
+    .sector-cell,
+    .stock-chip,
+    .bar-card {
+      transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease;
+    }
+
+    .panel:hover,
+    .tile:hover,
+    .mini:hover,
+    .metric:hover,
+    .heat:hover,
+    .fomc-date-card:hover,
+    .fomc-vote-card:hover,
+    .pulse-item:hover,
+    .sector-cell:hover,
+    .stock-chip:hover,
+    .bar-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(34, 211, 238, 0.38);
+      box-shadow:
+        0 16px 50px rgba(0,0,0,0.36),
+        0 0 28px rgba(34,211,238,0.12);
+    }
+
     .panel {
       border: 1px solid var(--line);
       background: var(--panel);
@@ -331,36 +363,6 @@
       inset: -80px;
       background: radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.12), transparent 35%);
       pointer-events: none;
-    }
-
-    .panel,
-    .tile,
-    .mini,
-    .metric,
-    .heat,
-    .fomc-date-card,
-    .fomc-vote-card,
-    .pulse-item {
-      transition:
-        transform 0.22s ease,
-        border-color 0.22s ease,
-        box-shadow 0.22s ease,
-        background 0.22s ease;
-    }
-
-    .panel:hover,
-    .tile:hover,
-    .mini:hover,
-    .metric:hover,
-    .heat:hover,
-    .fomc-date-card:hover,
-    .fomc-vote-card:hover,
-    .pulse-item:hover {
-      transform: translateY(-3px);
-      border-color: rgba(34, 211, 238, 0.38);
-      box-shadow:
-        0 16px 50px rgba(0,0,0,0.36),
-        0 0 28px rgba(34,211,238,0.12);
     }
 
     .hero-grid {
@@ -541,9 +543,6 @@
       font-size: 34px;
       font-weight: 950;
       letter-spacing: -0.05em;
-      text-shadow:
-        0 0 18px rgba(248,250,252,0.18),
-        0 0 36px rgba(34,211,238,0.10);
     }
 
     .heat-sub {
@@ -637,9 +636,6 @@
       position: relative;
       z-index: 2;
       white-space: nowrap;
-      text-shadow:
-        0 0 18px rgba(248,250,252,0.18),
-        0 0 36px rgba(34,211,238,0.10);
     }
 
     .tile-change {
@@ -685,14 +681,8 @@
     }
 
     @keyframes ringPop {
-      from {
-        transform: scale(0.88) rotate(-10deg);
-        opacity: 0.3;
-      }
-      to {
-        transform: scale(1) rotate(0deg);
-        opacity: 1;
-      }
+      from { transform: scale(0.88) rotate(-10deg); opacity: 0.3; }
+      to { transform: scale(1) rotate(0deg); opacity: 1; }
     }
 
     .rate-circle::before {
@@ -715,9 +705,6 @@
       font-size: 52px;
       letter-spacing: -0.08em;
       line-height: 0.9;
-      text-shadow:
-        0 0 18px rgba(248,250,252,0.18),
-        0 0 36px rgba(34,211,238,0.10);
     }
 
     .rate-inside span {
@@ -994,15 +981,302 @@
       font-size: clamp(15px, 1.25vw, 20px);
     }
 
+    /* Hot Stocks / Sectors */
+
+    .leadership-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.35fr 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .leadership-gauge {
+      min-height: 360px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .leadership-orb {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        conic-gradient(from 220deg,
+          #ef4444 0deg,
+          #fb923c 55deg,
+          #facc15 105deg,
+          #22d3ee 165deg,
+          #22c55e 235deg,
+          rgba(30,41,59,0.7) 235deg,
+          rgba(30,41,59,0.7) 360deg);
+      box-shadow: 0 0 70px rgba(34,211,238,0.18);
+      position: relative;
+      animation: orbBreathe 4.2s ease-in-out infinite;
+    }
+
+    .leadership-orb::before {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: #020617;
+      border: 1px solid rgba(148,163,184,0.18);
+    }
+
+    .leadership-center {
+      position: relative;
+      z-index: 2;
+    }
+
+    .leadership-score {
+      font-size: 72px;
+      line-height: 0.9;
+      font-weight: 950;
+      letter-spacing: -0.08em;
+    }
+
+    .leadership-label {
+      margin-top: 8px;
+      color: var(--cyan);
+      font-size: 16px;
+      font-weight: 950;
+    }
+
+    .factor-stack {
+      display: grid;
+      gap: 10px;
+      align-content: center;
+    }
+
+    .factor-line {
+      border-radius: 16px;
+      background: rgba(2,6,23,0.42);
+      border: 1px solid rgba(148,163,184,0.14);
+      padding: 11px;
+      min-width: 0;
+    }
+
+    .factor-line-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--sub);
+      font-weight: 850;
+      margin-bottom: 8px;
+    }
+
+    .factor-track {
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.13);
+      overflow: hidden;
+    }
+
+    .factor-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ef4444, #facc15, #22d3ee, #22c55e);
+      box-shadow: 0 0 18px rgba(34,211,238,0.35);
+      transition: width 1.1s cubic-bezier(.16,1,.3,1);
+    }
+
+    .sector-map {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .sector-cell {
+      min-height: 96px;
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.14);
+      padding: 12px;
+      background:
+        radial-gradient(circle at 70% 10%, var(--sectorGlow), transparent 55%),
+        rgba(2,6,23,0.44);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sector-cell::before {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: var(--sectorH);
+      background: linear-gradient(180deg, transparent, var(--sectorColor));
+      opacity: 0.33;
+    }
+
+    .sector-name,
+    .sector-perf,
+    .sector-sub {
+      position: relative;
+      z-index: 2;
+    }
+
+    .sector-name {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      min-height: 26px;
+    }
+
+    .sector-perf {
+      margin-top: 12px;
+      font-size: 28px;
+      font-weight: 950;
+      letter-spacing: -0.06em;
+    }
+
+    .sector-sub {
+      margin-top: 4px;
+      color: var(--sub);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .stock-board-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 16px;
+    }
+
+    .stock-chip-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .stock-chip {
+      border-radius: 18px;
+      background: rgba(2,6,23,0.44);
+      border: 1px solid rgba(148,163,184,0.14);
+      padding: 12px;
+      min-height: 104px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stock-chip::before {
+      content: "";
+      position: absolute;
+      inset: auto -10% -40% -10%;
+      height: 90%;
+      background: radial-gradient(circle, var(--stockGlow), transparent 65%);
+      opacity: 0.26;
+    }
+
+    .stock-symbol,
+    .stock-price,
+    .stock-change,
+    .stock-vol {
+      position: relative;
+      z-index: 2;
+    }
+
+    .stock-symbol {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+    }
+
+    .stock-price {
+      margin-top: 10px;
+      font-size: 24px;
+      line-height: 0.95;
+      font-weight: 950;
+      letter-spacing: -0.06em;
+      white-space: nowrap;
+    }
+
+    .stock-change {
+      margin-top: 9px;
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 12px;
+      font-weight: 950;
+      background: rgba(148,163,184,0.11);
+    }
+
+    .stock-vol {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .mag7-bars {
+      display: grid;
+      gap: 9px;
+    }
+
+    .bar-card {
+      border-radius: 15px;
+      border: 1px solid rgba(148,163,184,0.13);
+      background: rgba(2,6,23,0.42);
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 50px 1fr 58px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .bar-symbol {
+      color: var(--sub);
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .bar-track {
+      height: 11px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.13);
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 50%;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 14px currentColor;
+      transition: width 1s cubic-bezier(.16,1,.3,1);
+    }
+
+    .bar-value {
+      text-align: right;
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .source-note {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
     @media (max-width: 1100px) {
       .hero-grid,
       .section-grid,
       .fed-layout,
-      .fomc-mini-grid {
+      .fomc-mini-grid,
+      .leadership-grid,
+      .stock-board-grid {
         grid-template-columns: 1fr;
       }
 
-      .terminal-grid {
+      .terminal-grid,
+      .sector-map {
         grid-template-columns: repeat(2, 1fr);
       }
 
@@ -1020,6 +1294,10 @@
       }
 
       .market-pulse {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stock-chip-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
@@ -1053,7 +1331,9 @@
       .bottom-strip,
       .fomc-time-row,
       .vote-legend,
-      .market-pulse {
+      .market-pulse,
+      .sector-map,
+      .stock-chip-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1149,9 +1429,9 @@
       </div>
 
       <div class="pulse-item">
-        <span>GOLD</span>
-        <b id="pulseGold">--</b>
-        <em id="pulseGoldTag">--</em>
+        <span>EQUITY LEADER</span>
+        <b id="pulseLeader">--</b>
+        <em id="pulseLeaderTag">--</em>
       </div>
     </div>
 
@@ -1427,6 +1707,87 @@
         <div class="mini"><span>Gold</span><b id="goldMini">--</b></div>
       </div>
     </section>
+
+    <section class="module">
+      <div class="module-head">
+        <div class="module-title"><span class="dot"></span> EQUITY LEADERSHIP RADAR</div>
+        <div class="tag" id="dataSourceTag">Stooq CSV / fallback local</div>
+      </div>
+
+      <div class="leadership-grid">
+        <div class="panel leadership-gauge">
+          <div class="leadership-orb">
+            <div class="leadership-center">
+              <div class="leadership-score" id="leadershipScore">--</div>
+              <div class="leadership-label" id="leadershipLabel">--</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel factor-stack">
+          <div class="factor-line">
+            <div class="factor-line-head">
+              <span>AI / Semis Momentum</span>
+              <b id="aiMomentumVal">--</b>
+            </div>
+            <div class="factor-track"><div class="factor-fill" id="aiMomentumFill"></div></div>
+          </div>
+
+          <div class="factor-line">
+            <div class="factor-line-head">
+              <span>Magnificent 7 Breadth</span>
+              <b id="mag7Val">--</b>
+            </div>
+            <div class="factor-track"><div class="factor-fill" id="mag7Fill"></div></div>
+          </div>
+
+          <div class="factor-line">
+            <div class="factor-line-head">
+              <span>Sector Breadth</span>
+              <b id="sectorBreadthVal">--</b>
+            </div>
+            <div class="factor-track"><div class="factor-fill" id="sectorBreadthFill"></div></div>
+          </div>
+
+          <div class="factor-line">
+            <div class="factor-line-head">
+              <span>Small-cap Expansion</span>
+              <b id="smallCapVal">--</b>
+            </div>
+            <div class="factor-track"><div class="factor-fill" id="smallCapFill"></div></div>
+          </div>
+
+          <div class="factor-line">
+            <div class="factor-line-head">
+              <span>Defensive Lag</span>
+              <b id="defensiveLagVal">--</b>
+            </div>
+            <div class="factor-track"><div class="factor-fill" id="defensiveLagFill"></div></div>
+          </div>
+        </div>
+
+        <div class="panel sector-map" id="sectorMap"></div>
+      </div>
+    </section>
+
+    <section class="module">
+      <div class="module-head">
+        <div class="module-title"><span class="dot"></span> AI / SEMICONDUCTOR HEATMAP</div>
+        <div class="tag">NVDA / AMD / AVGO / TSM / ASML / ARM / MU / SMH</div>
+      </div>
+
+      <div class="stock-board-grid">
+        <div class="panel">
+          <div class="stock-chip-grid" id="aiStockGrid"></div>
+          <div class="source-note">数据优先尝试从 Stooq CSV 拉取；若浏览器 CORS 或网络失败，则自动使用内置 fallback 数据。</div>
+        </div>
+
+        <div class="panel">
+          <div class="module-title" style="margin-bottom: 12px;"><span class="dot"></span> MAGNIFICENT 7 ENERGY</div>
+          <div class="mag7-bars" id="mag7Bars"></div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -1482,6 +1843,42 @@
       goldChange: 0.36
     };
 
+    const MARKET = {
+      AI: [
+        { symbol: "NVDA", name: "NVIDIA", price: 182.4, change: 1.82, volumeHot: 88, stooq: "nvda.us" },
+        { symbol: "AMD", name: "AMD", price: 174.8, change: -0.42, volumeHot: 64, stooq: "amd.us" },
+        { symbol: "AVGO", name: "Broadcom", price: 352.1, change: 2.18, volumeHot: 82, stooq: "avgo.us" },
+        { symbol: "TSM", name: "TSMC", price: 298.5, change: 0.91, volumeHot: 70, stooq: "tsm.us" },
+        { symbol: "ASML", name: "ASML", price: 1018.2, change: 0.55, volumeHot: 58, stooq: "asml.us" },
+        { symbol: "ARM", name: "Arm", price: 162.7, change: 1.12, volumeHot: 72, stooq: "arm.us" },
+        { symbol: "MU", name: "Micron", price: 154.6, change: 1.66, volumeHot: 86, stooq: "mu.us" },
+        { symbol: "SMH", name: "Semis ETF", price: 338.4, change: 1.27, volumeHot: 76, stooq: "smh.us" }
+      ],
+      MAG7: [
+        { symbol: "AAPL", price: 217.6, change: -0.18, stooq: "aapl.us" },
+        { symbol: "MSFT", price: 538.1, change: 0.62, stooq: "msft.us" },
+        { symbol: "NVDA", price: 182.4, change: 1.82, stooq: "nvda.us" },
+        { symbol: "GOOGL", price: 287.2, change: 0.31, stooq: "googl.us" },
+        { symbol: "AMZN", price: 249.5, change: 0.74, stooq: "amzn.us" },
+        { symbol: "META", price: 718.4, change: 1.08, stooq: "meta.us" },
+        { symbol: "TSLA", price: 492.8, change: -1.35, stooq: "tsla.us" }
+      ],
+      SECTORS: [
+        { key: "XLK", name: "TECH", change: 0.86, rs: 0.44, stooq: "xlk.us" },
+        { key: "SMH", name: "SEMIS", change: 1.27, rs: 0.85, stooq: "smh.us" },
+        { key: "QQQ", name: "GROWTH", change: 0.76, rs: 0.34, stooq: "qqq.us" },
+        { key: "IWM", name: "SMALL", change: -0.31, rs: -0.73, stooq: "iwm.us" },
+        { key: "XLF", name: "BANKS", change: 0.21, rs: -0.21, stooq: "xlf.us" },
+        { key: "XLE", name: "ENERGY", change: -0.18, rs: -0.60, stooq: "xle.us" },
+        { key: "XLI", name: "INDUSTRIAL", change: 0.33, rs: -0.09, stooq: "xli.us" },
+        { key: "XLV", name: "HEALTH", change: 0.12, rs: -0.30, stooq: "xlv.us" },
+        { key: "XLY", name: "CYCLICAL", change: 0.58, rs: 0.16, stooq: "xly.us" },
+        { key: "XLP", name: "STAPLES", change: -0.08, rs: -0.50, stooq: "xlp.us" },
+        { key: "XLU", name: "UTILITIES", change: -0.22, rs: -0.64, stooq: "xlu.us" },
+        { key: "SOXX", name: "CHIPS", change: 1.14, rs: 0.72, stooq: "soxx.us" }
+      ]
+    };
+
     function clamp(x, min = 0, max = 100) {
       return Math.min(max, Math.max(min, x));
     }
@@ -1509,8 +1906,25 @@
 
     function setClass(id, value) {
       const el = document.getElementById(id);
+      if (!el) return;
       el.classList.remove("positive", "negative", "neutral");
       el.classList.add(value > 0 ? "positive" : value < 0 ? "negative" : "neutral");
+    }
+
+    function colorFor(score) {
+      if (score < 20) return "#ef4444";
+      if (score < 40) return "#fb923c";
+      if (score < 60) return "#facc15";
+      if (score < 80) return "#22d3ee";
+      return "#22c55e";
+    }
+
+    function colorForChange(change) {
+      if (change >= 1.2) return "#22c55e";
+      if (change >= 0.3) return "#22d3ee";
+      if (change > -0.3) return "#facc15";
+      if (change > -1.2) return "#fb923c";
+      return "#ef4444";
     }
 
     function clock() {
@@ -1583,18 +1997,23 @@
       return "极有利";
     }
 
-    function colorFor(score) {
-      if (score < 20) return "#ef4444";
-      if (score < 40) return "#fb923c";
-      if (score < 60) return "#facc15";
-      if (score < 80) return "#22d3ee";
-      return "#22c55e";
+    function leadershipRegime(score) {
+      if (score < 20) return "主线崩塌";
+      if (score < 40) return "防御占优";
+      if (score < 60) return "分化震荡";
+      if (score < 80) return "成长主导";
+      return "全面 Risk-On";
     }
 
     function paintHeat(id, score) {
       const el = document.getElementById(id);
       el.style.setProperty("--h", score + "%");
       el.style.setProperty("--c", colorFor(score));
+    }
+
+    function average(arr, field) {
+      if (!arr.length) return 0;
+      return arr.reduce((sum, item) => sum + Number(item[field] || 0), 0) / arr.length;
     }
 
     function renderRisk() {
@@ -1649,12 +2068,8 @@
       document.getElementById("pulseDxy").textContent = STRESS_DATA.dxy.toFixed(1);
       document.getElementById("pulseDxyTag").textContent = signedPct(STRESS_DATA.dxyChange);
 
-      document.getElementById("pulseGold").textContent = num(STRESS_DATA.gold);
-      document.getElementById("pulseGoldTag").textContent = signedPct(STRESS_DATA.goldChange);
-
       setClass("pulse10YTag", -TREASURY_DATA.us10yChange);
       setClass("pulseDxyTag", -STRESS_DATA.dxyChange);
-      setClass("pulseGoldTag", STRESS_DATA.goldChange);
     }
 
     function renderFed() {
@@ -1794,6 +2209,188 @@
       document.getElementById("goldMini").textContent = num(STRESS_DATA.gold);
     }
 
+    function calculateLeadership() {
+      const aiAvg = average(MARKET.AI, "change");
+      const mag7Positive = MARKET.MAG7.filter(x => x.change > 0).length / MARKET.MAG7.length;
+      const sectorPositive = MARKET.SECTORS.filter(x => x.change > 0).length / MARKET.SECTORS.length;
+      const iwm = MARKET.SECTORS.find(x => x.key === "IWM")?.change || 0;
+      const defensiveAvg = average(MARKET.SECTORS.filter(x => ["XLU", "XLP", "XLV"].includes(x.key)), "change");
+      const growthAvg = average(MARKET.SECTORS.filter(x => ["QQQ", "XLK", "SMH", "SOXX"].includes(x.key)), "change");
+
+      const aiMomentum = Math.round(scaleDirect(aiAvg, -1.8, 2.2));
+      const mag7Breadth = Math.round(mag7Positive * 100);
+      const sectorBreadth = Math.round(sectorPositive * 100);
+      const smallCapExpansion = Math.round(scaleDirect(iwm, -1.2, 1.5));
+      const defensiveLag = Math.round(scaleDirect(growthAvg - defensiveAvg, -1.0, 1.6));
+
+      const total = Math.round(
+        aiMomentum * 0.30 +
+        mag7Breadth * 0.25 +
+        sectorBreadth * 0.20 +
+        smallCapExpansion * 0.15 +
+        defensiveLag * 0.10
+      );
+
+      return {
+        total,
+        aiMomentum,
+        mag7Breadth,
+        sectorBreadth,
+        smallCapExpansion,
+        defensiveLag
+      };
+    }
+
+    function setFactorLine(id, value) {
+      document.getElementById(id + "Val").textContent = value + "/100";
+      document.getElementById(id + "Fill").style.width = value + "%";
+    }
+
+    function renderLeadership() {
+      const s = calculateLeadership();
+
+      document.getElementById("leadershipScore").textContent = s.total;
+      document.getElementById("leadershipLabel").textContent = leadershipRegime(s.total);
+
+      setFactorLine("aiMomentum", s.aiMomentum);
+      setFactorLine("mag7", s.mag7Breadth);
+      setFactorLine("sectorBreadth", s.sectorBreadth);
+      setFactorLine("smallCap", s.smallCapExpansion);
+      setFactorLine("defensiveLag", s.defensiveLag);
+
+      document.getElementById("pulseLeader").textContent = s.total + "/100";
+      document.getElementById("pulseLeaderTag").textContent = leadershipRegime(s.total);
+
+      renderSectorMap();
+      renderAIStocks();
+      renderMag7Bars();
+    }
+
+    function renderSectorMap() {
+      const container = document.getElementById("sectorMap");
+      container.innerHTML = "";
+
+      MARKET.SECTORS.forEach(item => {
+        const strength = clamp(scaleDirect(item.change, -1.5, 1.8));
+        const color = colorForChange(item.change);
+        const cell = document.createElement("div");
+        cell.className = "sector-cell";
+        cell.style.setProperty("--sectorH", strength + "%");
+        cell.style.setProperty("--sectorColor", color);
+        cell.style.setProperty("--sectorGlow", color + "55");
+
+        cell.innerHTML = `
+          <div class="sector-name">${item.name}</div>
+          <div class="sector-perf ${item.change >= 0 ? "positive" : "negative"}">${signedPct(item.change)}</div>
+          <div class="sector-sub">${item.key} · RS ${item.rs >= 0 ? "+" : ""}${item.rs.toFixed(2)}</div>
+        `;
+
+        container.appendChild(cell);
+      });
+    }
+
+    function renderAIStocks() {
+      const container = document.getElementById("aiStockGrid");
+      container.innerHTML = "";
+
+      MARKET.AI.forEach(item => {
+        const color = colorForChange(item.change);
+        const chip = document.createElement("div");
+        chip.className = "stock-chip";
+        chip.style.setProperty("--stockGlow", color + "99");
+
+        chip.innerHTML = `
+          <div class="stock-symbol">${item.symbol}</div>
+          <div class="stock-price">${num(item.price, 2)}</div>
+          <div class="stock-change ${item.change >= 0 ? "positive" : "negative"}">${signedPct(item.change)}</div>
+          <div class="stock-vol">VOL HEAT ${Math.round(item.volumeHot)}</div>
+        `;
+
+        container.appendChild(chip);
+      });
+    }
+
+    function renderMag7Bars() {
+      const container = document.getElementById("mag7Bars");
+      container.innerHTML = "";
+
+      MARKET.MAG7.forEach(item => {
+        const width = clamp(scaleDirect(item.change, -2.2, 2.2));
+        const color = colorForChange(item.change);
+        const row = document.createElement("div");
+        row.className = "bar-card";
+
+        row.innerHTML = `
+          <div class="bar-symbol">${item.symbol}</div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:${width}%; background:${color};"></div>
+          </div>
+          <div class="bar-value ${item.change >= 0 ? "positive" : "negative"}">${signedPct(item.change)}</div>
+        `;
+
+        container.appendChild(row);
+      });
+    }
+
+    function allMarketItems() {
+      const map = new Map();
+      [...MARKET.AI, ...MARKET.MAG7, ...MARKET.SECTORS].forEach(item => {
+        if (item.stooq) map.set(item.stooq, item);
+      });
+      return map;
+    }
+
+    async function loadStooqMarketData() {
+      const map = allMarketItems();
+      const symbols = [...map.keys()];
+
+      if (!symbols.length) return;
+
+      const url = "https://stooq.com/q/l/?s=" + symbols.join(",") + "&f=sd2t2ohlcv&h&e=csv";
+
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error("Stooq request failed");
+
+        const csv = await res.text();
+        const lines = csv.trim().split(/\r?\n/);
+        if (lines.length < 2) throw new Error("No CSV rows");
+
+        const headers = lines[0].split(",").map(x => x.trim().toLowerCase());
+
+        for (let i = 1; i < lines.length; i++) {
+          const cols = lines[i].split(",");
+          const row = {};
+          headers.forEach((h, idx) => row[h] = cols[idx]);
+
+          const symbol = (row.symbol || "").toLowerCase();
+          const item = map.get(symbol);
+          if (!item) continue;
+
+          const open = Number(row.open);
+          const close = Number(row.close);
+          const volume = Number(row.volume);
+
+          if (Number.isFinite(close) && close > 0) {
+            item.price = close;
+          }
+
+          if (Number.isFinite(open) && open > 0 && Number.isFinite(close)) {
+            item.change = ((close - open) / open) * 100;
+          }
+
+          if (Number.isFinite(volume) && volume > 0) {
+            item.volumeHot = clamp(Math.log10(volume) * 12);
+          }
+        }
+
+        document.getElementById("dataSourceTag").textContent = "Live-ish via Stooq CSV";
+      } catch (err) {
+        document.getElementById("dataSourceTag").textContent = "Fallback local data";
+        console.warn("Stooq data failed, fallback used:", err);
+      }
+    }
+
     clock();
     setInterval(clock, 1000);
 
@@ -1802,6 +2399,11 @@
     renderFomcPanel();
     renderCurve();
     renderEquity();
+    renderLeadership();
+
+    loadStooqMarketData().then(() => {
+      renderLeadership();
+    });
 
     window.addEventListener("mousemove", function (event) {
       const x = Math.round((event.clientX / window.innerWidth) * 100);
