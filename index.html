@@ -25,7 +25,9 @@
       --purple: #a78bfa;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -1086,22 +1088,24 @@
       transition: width 1.1s cubic-bezier(.16,1,.3,1);
     }
 
+    /* 板块热力图：压缩版，避免文字溢出 */
     .sector-map {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
     }
 
     .sector-cell {
-      min-height: 96px;
+      min-height: 92px;
       border-radius: 18px;
       border: 1px solid rgba(148,163,184,0.14);
-      padding: 12px;
+      padding: 10px;
       background:
-        radial-gradient(circle at 70% 10%, var(--sectorGlow), transparent 55%),
+        radial-gradient(circle at 72% 8%, var(--sectorGlow), transparent 58%),
         rgba(2,6,23,0.44);
       position: relative;
       overflow: hidden;
+      min-width: 0;
     }
 
     .sector-cell::before {
@@ -1110,36 +1114,68 @@
       inset: auto 0 0;
       height: var(--sectorH);
       background: linear-gradient(180deg, transparent, var(--sectorColor));
-      opacity: 0.33;
+      opacity: 0.30;
     }
 
-    .sector-name,
+    .sector-cn,
+    .sector-en,
     .sector-perf,
-    .sector-sub {
+    .sector-sub,
+    .sector-note {
       position: relative;
       z-index: 2;
     }
 
-    .sector-name {
+    .sector-cn {
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sector-en {
+      margin-top: 2px;
       color: var(--muted);
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      min-height: 26px;
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .sector-perf {
-      margin-top: 12px;
-      font-size: 28px;
+      margin-top: 8px;
+      font-size: clamp(20px, 1.8vw, 27px);
+      line-height: 0.95;
       font-weight: 950;
       letter-spacing: -0.06em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .sector-sub {
-      margin-top: 4px;
+      margin-top: 5px;
       color: var(--sub);
-      font-size: 11px;
-      font-weight: 800;
+      font-size: 10px;
+      font-weight: 850;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sector-note {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .stock-board-grid {
@@ -1275,9 +1311,12 @@
         grid-template-columns: 1fr;
       }
 
-      .terminal-grid,
-      .sector-map {
+      .terminal-grid {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      .sector-map {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .bottom-strip {
@@ -1864,18 +1903,18 @@
         { symbol: "TSLA", price: 492.8, change: -1.35, stooq: "tsla.us" }
       ],
       SECTORS: [
-        { key: "XLK", name: "TECH", change: 0.86, rs: 0.44, stooq: "xlk.us" },
-        { key: "SMH", name: "SEMIS", change: 1.27, rs: 0.85, stooq: "smh.us" },
-        { key: "QQQ", name: "GROWTH", change: 0.76, rs: 0.34, stooq: "qqq.us" },
-        { key: "IWM", name: "SMALL", change: -0.31, rs: -0.73, stooq: "iwm.us" },
-        { key: "XLF", name: "BANKS", change: 0.21, rs: -0.21, stooq: "xlf.us" },
-        { key: "XLE", name: "ENERGY", change: -0.18, rs: -0.60, stooq: "xle.us" },
-        { key: "XLI", name: "INDUSTRIAL", change: 0.33, rs: -0.09, stooq: "xli.us" },
-        { key: "XLV", name: "HEALTH", change: 0.12, rs: -0.30, stooq: "xlv.us" },
-        { key: "XLY", name: "CYCLICAL", change: 0.58, rs: 0.16, stooq: "xly.us" },
-        { key: "XLP", name: "STAPLES", change: -0.08, rs: -0.50, stooq: "xlp.us" },
-        { key: "XLU", name: "UTILITIES", change: -0.22, rs: -0.64, stooq: "xlu.us" },
-        { key: "SOXX", name: "CHIPS", change: 1.14, rs: 0.72, stooq: "soxx.us" }
+        { key: "XLK", cn: "科技", name: "TECH", note: "软件+硬件", change: 0.86, rs: 0.44, stooq: "xlk.us" },
+        { key: "SMH", cn: "半导体", name: "SEMIS", note: "芯片主线", change: 1.27, rs: 0.85, stooq: "smh.us" },
+        { key: "QQQ", cn: "成长", name: "GROWTH", note: "纳指风格", change: 0.76, rs: 0.34, stooq: "qqq.us" },
+        { key: "IWM", cn: "小盘", name: "SMALL", note: "风险扩散", change: -0.31, rs: -0.73, stooq: "iwm.us" },
+        { key: "XLF", cn: "金融", name: "BANKS", note: "银行券商", change: 0.21, rs: -0.21, stooq: "xlf.us" },
+        { key: "XLE", cn: "能源", name: "ENERGY", note: "油气周期", change: -0.18, rs: -0.60, stooq: "xle.us" },
+        { key: "XLI", cn: "工业", name: "INDUS", note: "制造基建", change: 0.33, rs: -0.09, stooq: "xli.us" },
+        { key: "XLV", cn: "医疗", name: "HEALTH", note: "防御成长", change: 0.12, rs: -0.30, stooq: "xlv.us" },
+        { key: "XLY", cn: "消费", name: "CYCLIC", note: "可选消费", change: 0.58, rs: 0.16, stooq: "xly.us" },
+        { key: "XLP", cn: "必需", name: "STAPLE", note: "防御消费", change: -0.08, rs: -0.50, stooq: "xlp.us" },
+        { key: "XLU", cn: "公用", name: "UTILITY", note: "利率敏感", change: -0.22, rs: -0.64, stooq: "xlu.us" },
+        { key: "SOXX", cn: "芯片", name: "CHIPS", note: "费半ETF", change: 1.14, rs: 0.72, stooq: "soxx.us" }
       ]
     };
 
@@ -2271,18 +2310,39 @@
       container.innerHTML = "";
 
       MARKET.SECTORS.forEach(item => {
+        /*
+          板块热力图计算逻辑：
+          1. change = 当日涨跌幅，来自 Stooq CSV；若 API 拉取失败，则使用本地 fallback 数据。
+          2. rs = 相对强弱，当前口径是：该板块涨跌幅 - S&P 500 涨跌幅。
+             例：SMH +1.27%，SPX +0.42%，则 RS = +0.85。
+          3. 色彩：
+             绿色 = 明显强势；
+             青色 = 温和强势；
+             黄色 = 中性；
+             橙红 = 弱势。
+          4. 背景填充高度 sectorH：
+             用 change 在 [-1.5%, +1.8%] 区间内做 0-100 标准化。
+             涨得越多，底部发光面积越高。
+        */
+
         const strength = clamp(scaleDirect(item.change, -1.5, 1.8));
         const color = colorForChange(item.change);
+
         const cell = document.createElement("div");
         cell.className = "sector-cell";
         cell.style.setProperty("--sectorH", strength + "%");
         cell.style.setProperty("--sectorColor", color);
         cell.style.setProperty("--sectorGlow", color + "55");
 
+        const changeClass = item.change >= 0 ? "positive" : "negative";
+        const rsText = item.rs >= 0 ? "+" + item.rs.toFixed(2) : item.rs.toFixed(2);
+
         cell.innerHTML = `
-          <div class="sector-name">${item.name}</div>
-          <div class="sector-perf ${item.change >= 0 ? "positive" : "negative"}">${signedPct(item.change)}</div>
-          <div class="sector-sub">${item.key} · RS ${item.rs >= 0 ? "+" : ""}${item.rs.toFixed(2)}</div>
+          <div class="sector-cn">${item.cn}</div>
+          <div class="sector-en">${item.name}</div>
+          <div class="sector-perf ${changeClass}">${signedPct(item.change)}</div>
+          <div class="sector-sub">${item.key} · RS ${rsText}</div>
+          <div class="sector-note">${item.note}</div>
         `;
 
         container.appendChild(cell);
@@ -2383,6 +2443,17 @@
             item.volumeHot = clamp(Math.log10(volume) * 12);
           }
         }
+
+        /*
+          RS 计算逻辑：
+          每个板块 RS = 板块当日涨跌幅 - S&P 500 当日涨跌幅。
+          RS > 0：跑赢大盘；
+          RS < 0：跑输大盘。
+        */
+        const spxBase = Number(EQUITY_DATA.spxChange || 0);
+        MARKET.SECTORS.forEach(item => {
+          item.rs = Number(item.change || 0) - spxBase;
+        });
 
         document.getElementById("dataSourceTag").textContent = "Live-ish via Stooq CSV";
       } catch (err) {
