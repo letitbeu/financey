@@ -24,7 +24,9 @@
       --purple: #a78bfa;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -109,6 +111,7 @@
         0 24px 80px rgba(0, 0, 0, 0.38),
         inset 0 1px 0 rgba(255, 255, 255, 0.04);
       backdrop-filter: blur(14px);
+      overflow: hidden;
     }
 
     .module-head {
@@ -135,6 +138,7 @@
       border-radius: 999px;
       background: var(--cyan);
       box-shadow: 0 0 20px var(--cyan);
+      flex: 0 0 auto;
     }
 
     .tag {
@@ -144,12 +148,7 @@
       border-radius: 999px;
       padding: 7px 10px;
       background: rgba(2, 6, 23, 0.45);
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 1fr 0.9fr;
-      gap: 16px;
+      white-space: nowrap;
     }
 
     .panel {
@@ -159,6 +158,7 @@
       padding: 18px;
       position: relative;
       overflow: hidden;
+      min-width: 0;
     }
 
     .panel::after {
@@ -167,6 +167,13 @@
       inset: -80px;
       background: radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.12), transparent 35%);
       pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr 0.9fr;
+      gap: 16px;
+      align-items: stretch;
     }
 
     .mega-gauge {
@@ -300,7 +307,9 @@
       opacity: 0.85;
     }
 
-    .heat-name, .heat-score, .heat-sub {
+    .heat-name,
+    .heat-score,
+    .heat-sub {
       position: relative;
       z-index: 2;
     }
@@ -336,6 +345,7 @@
       padding: 13px;
       background: rgba(2, 6, 23, 0.42);
       border: 1px solid var(--line);
+      min-width: 0;
     }
 
     .metric span {
@@ -363,6 +373,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
+      align-items: start;
     }
 
     .terminal-grid {
@@ -379,6 +390,7 @@
       min-height: 150px;
       position: relative;
       overflow: hidden;
+      min-width: 0;
     }
 
     .tile::before {
@@ -405,6 +417,7 @@
       letter-spacing: -0.06em;
       position: relative;
       z-index: 2;
+      white-space: nowrap;
     }
 
     .tile-change {
@@ -425,12 +438,13 @@
 
     .fed-layout {
       display: grid;
-      grid-template-columns: 1fr 1.2fr;
+      grid-template-columns: 0.9fr 1.15fr;
       gap: 16px;
+      align-items: stretch;
     }
 
     .rate-visual {
-      height: 240px;
+      height: 300px;
       display: grid;
       place-items: center;
     }
@@ -479,6 +493,7 @@
       display: grid;
       gap: 12px;
       align-content: center;
+      overflow: visible;
     }
 
     .prob {
@@ -540,9 +555,13 @@
 
     .bottom-strip {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 10px;
       margin-top: 12px;
+    }
+
+    .fed-layout .bottom-strip {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .mini {
@@ -550,6 +569,8 @@
       border: 1px solid var(--line);
       background: rgba(2, 6, 23, 0.42);
       padding: 12px;
+      min-width: 0;
+      overflow: hidden;
     }
 
     .mini span {
@@ -557,11 +578,20 @@
       color: var(--muted);
       font-size: 11px;
       margin-bottom: 8px;
+      white-space: nowrap;
     }
 
     .mini b {
+      display: block;
       font-size: 20px;
       letter-spacing: -0.04em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fed-layout .mini b {
+      font-size: clamp(15px, 1.25vw, 20px);
     }
 
     @media (max-width: 1100px) {
@@ -579,6 +609,10 @@
         grid-template-columns: repeat(3, 1fr);
       }
 
+      .fed-layout .bottom-strip {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
       .heat-grid {
         grid-template-columns: repeat(5, minmax(120px, 1fr));
         overflow-x: auto;
@@ -586,6 +620,11 @@
     }
 
     @media (max-width: 640px) {
+      .page {
+        width: min(100% - 20px, 1380px);
+        padding-top: 18px;
+      }
+
       .topbar {
         flex-direction: column;
       }
@@ -594,10 +633,24 @@
         text-align: left;
       }
 
+      .module {
+        padding: 14px;
+        border-radius: 22px;
+      }
+
+      .module-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
       .terminal-grid,
       .matrix,
       .bottom-strip {
         grid-template-columns: 1fr;
+      }
+
+      .fed-layout .bottom-strip {
+        grid-template-columns: 1fr 1fr;
       }
 
       .orb {
@@ -613,6 +666,24 @@
 
       .big-score {
         font-size: 78px;
+      }
+
+      .rate-visual {
+        height: 250px;
+      }
+
+      .rate-circle {
+        width: 200px;
+        height: 200px;
+      }
+
+      .rate-circle::before {
+        width: 142px;
+        height: 142px;
+      }
+
+      .rate-inside b {
+        font-size: 46px;
       }
     }
   </style>
@@ -906,11 +977,6 @@
       return (n > 0 ? "+" : "") + n.toFixed(2) + "%";
     }
 
-    function bp(x) {
-      const n = Number(x);
-      return (n > 0 ? "+" : "") + n.toFixed(1) + "bp";
-    }
-
     function num(x, d = 1) {
       return Number(x).toLocaleString("en-US", { maximumFractionDigits: d });
     }
@@ -953,6 +1019,7 @@
       const avg = (d.spxChange + d.ndxChange + d.djiChange + d.rutChange) / 4;
       const growth = d.ndxChange - d.spxChange;
       const breadth = d.rutChange - d.spxChange;
+
       return Math.round(
         scaleDirect(avg, -1.5, 1.5) * 0.55 +
         scaleDirect(growth, -0.8, 0.8) * 0.2 +
@@ -1073,7 +1140,10 @@
       const p10 = { x: 280, y: y(d.us10y) };
       const p30 = { x: 460, y: y(d.us30y) };
 
-      document.getElementById("yieldPath").setAttribute("d", `M ${p2.x} ${p2.y} C 180 ${p2.y}, 200 ${p10.y}, ${p10.x} ${p10.y} S 390 ${p30.y}, ${p30.x} ${p30.y}`);
+      document.getElementById("yieldPath").setAttribute(
+        "d",
+        `M ${p2.x} ${p2.y} C 180 ${p2.y}, 200 ${p10.y}, ${p10.x} ${p10.y} S 390 ${p30.y}, ${p30.x} ${p30.y}`
+      );
 
       [["dot2y", p2], ["dot10y", p10], ["dot30y", p30]].forEach(([id, p]) => {
         document.getElementById(id).setAttribute("cx", p.x);
@@ -1127,6 +1197,7 @@
         : avg < 0 && TREASURY_DATA.us10yChange > 0
         ? "双重压力"
         : "中性";
+
       document.getElementById("stockBond").textContent = sb;
 
       document.getElementById("dxyMini").textContent = STRESS_DATA.dxy.toFixed(1);
@@ -1135,6 +1206,7 @@
 
     clock();
     setInterval(clock, 1000);
+
     renderRisk();
     renderFed();
     renderCurve();
