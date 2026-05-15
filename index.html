@@ -25,9 +25,7 @@
       --slate: #64748b;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -143,7 +141,11 @@
     .sector-cell,
     .stock-chip,
     .bar-card,
-    .note-chip {
+    .note-chip,
+    .narrative-card,
+    .news-card,
+    .catalyst-card,
+    .story-chip {
       border: 1px solid var(--line);
       background: var(--panel2);
       box-shadow:
@@ -163,7 +165,11 @@
     .sector-cell:hover,
     .stock-chip:hover,
     .bar-card:hover,
-    .note-chip:hover {
+    .note-chip:hover,
+    .narrative-card:hover,
+    .news-card:hover,
+    .catalyst-card:hover,
+    .story-chip:hover {
       transform: translateY(-2px);
       border-color: rgba(96, 165, 250, 0.34);
       background: rgba(17, 24, 39, 0.9);
@@ -299,9 +305,7 @@
       background: rgba(2, 6, 23, 0.28);
     }
 
-    .note-chip b {
-      color: var(--strong);
-    }
+    .note-chip b { color: var(--strong); }
 
     .panel {
       border-radius: 20px;
@@ -874,7 +878,8 @@
       text-align: center;
     }
 
-    .leadership-orb {
+    .leadership-orb,
+    .narrative-orb {
       width: 250px;
       height: 250px;
       border-radius: 50%;
@@ -893,7 +898,8 @@
       position: relative;
     }
 
-    .leadership-orb::before {
+    .leadership-orb::before,
+    .narrative-orb::before {
       content: "";
       position: absolute;
       width: 180px;
@@ -903,12 +909,15 @@
       border: 1px solid rgba(148,163,184,0.16);
     }
 
-    .leadership-center {
+    .leadership-center,
+    .narrative-center {
       position: relative;
       z-index: 2;
+      text-align: center;
     }
 
-    .leadership-score {
+    .leadership-score,
+    .narrative-score {
       font-size: 72px;
       line-height: 0.9;
       font-weight: 950;
@@ -916,7 +925,8 @@
       letter-spacing: -0.08em;
     }
 
-    .leadership-label {
+    .leadership-label,
+    .narrative-label {
       margin-top: 8px;
       color: var(--blue);
       font-size: 16px;
@@ -1171,13 +1181,220 @@
       line-height: 1.5;
     }
 
+    /* Core AI Narrative Tracker */
+    .narrative-grid {
+      display: grid;
+      grid-template-columns: 0.8fr 1fr 1.2fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .narrative-gauge {
+      min-height: 350px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .story-stack {
+      display: grid;
+      gap: 10px;
+      align-content: stretch;
+    }
+
+    .story-chip {
+      border-radius: 15px;
+      padding: 11px;
+      background: rgba(2, 6, 23, 0.34);
+      min-width: 0;
+    }
+
+    .story-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      color: var(--sub);
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .story-tag {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 850;
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      border-radius: 999px;
+      padding: 4px 7px;
+      white-space: nowrap;
+    }
+
+    .story-meter {
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.13);
+      overflow: hidden;
+    }
+
+    .story-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #991b1b, #b45309, #2563eb, #15803d);
+      transition: width 0.8s cubic-bezier(.16,1,.3,1);
+    }
+
+    .story-meta {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+
+    .news-feed {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      max-height: 350px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .news-feed::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .news-feed::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.22);
+      border-radius: 999px;
+    }
+
+    .news-card {
+      border-radius: 15px;
+      padding: 12px;
+      background: rgba(2, 6, 23, 0.34);
+      min-width: 0;
+    }
+
+    .news-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 7px;
+    }
+
+    .news-source {
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .news-time {
+      color: var(--muted);
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .news-title {
+      color: var(--strong);
+      font-size: 13px;
+      line-height: 1.42;
+      font-weight: 850;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .news-meta {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .news-pill {
+      border-radius: 999px;
+      padding: 4px 7px;
+      font-size: 10px;
+      font-weight: 850;
+      color: var(--muted);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(15, 23, 42, 0.44);
+    }
+
+    .catalyst-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .catalyst-card {
+      border-radius: 15px;
+      padding: 12px;
+      background: rgba(2, 6, 23, 0.34);
+      min-width: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .catalyst-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -20% -52% -20%;
+      height: 90%;
+      background: radial-gradient(circle, var(--catalystGlow), transparent 68%);
+      opacity: 0.13;
+    }
+
+    .catalyst-symbol,
+    .catalyst-score,
+    .catalyst-text {
+      position: relative;
+      z-index: 2;
+    }
+
+    .catalyst-symbol {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+    }
+
+    .catalyst-score {
+      margin-top: 8px;
+      color: var(--strong);
+      font-size: 24px;
+      line-height: 0.95;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+    }
+
+    .catalyst-text {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
     @media (max-width: 1100px) {
       .hero-grid,
       .section-grid,
       .fed-layout,
       .fomc-mini-grid,
       .leadership-grid,
-      .stock-board-grid {
+      .stock-board-grid,
+      .narrative-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1185,7 +1402,8 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .sector-map {
+      .sector-map,
+      .catalyst-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
@@ -1208,6 +1426,10 @@
 
       .stock-chip-grid {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      .news-feed {
+        max-height: 420px;
       }
     }
 
@@ -1248,7 +1470,8 @@
       .vote-legend,
       .market-pulse,
       .sector-map,
-      .stock-chip-grid {
+      .stock-chip-grid,
+      .catalyst-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1337,9 +1560,9 @@
         <em id="pulseDxyTag">--</em>
       </div>
       <div class="pulse-item">
-        <span>EQUITY LEADER</span>
-        <b id="pulseLeader">--</b>
-        <em id="pulseLeaderTag">--</em>
+        <span>AI NARRATIVE</span>
+        <b id="pulseNarrative">--</b>
+        <em id="pulseNarrativeTag">--</em>
       </div>
     </div>
 
@@ -1605,6 +1828,47 @@
         VOL HEAT 是成交量热度代理，当前用成交量对数标准化得到，用于观察是否存在放量异动。
       </div>
     </section>
+
+    <section class="module">
+      <div class="module-head">
+        <div class="module-title"><span class="dot"></span> CORE AI NARRATIVE TRACKER</div>
+        <div class="tag" id="aiNewsSourceTag">Google News RSS / fallback local</div>
+      </div>
+
+      <div class="narrative-grid">
+        <div class="panel narrative-gauge">
+          <div class="narrative-orb">
+            <div class="narrative-center">
+              <div class="narrative-score" id="aiNarrativeScore">--</div>
+              <div class="narrative-label" id="aiNarrativeLabel">--</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel story-stack" id="narrativeStack"></div>
+
+        <div class="panel">
+          <div class="module-title" style="margin-bottom: 12px;"><span class="dot"></span> HOT AI NEWS FEED</div>
+          <div class="news-feed" id="aiNewsFeed"></div>
+        </div>
+      </div>
+
+      <div class="catalyst-grid" id="catalystGrid"></div>
+
+      <div class="module-note">
+        <span class="note-title">指标解释：</span>
+        <b>核心 AI 叙事跟踪</b>用于监控 AI 行情的新闻驱动、产业链扩散和股票催化。
+        AI Narrative Score 综合新闻情绪、AI/半导体股票动能、七巨头广度和叙事分布计算。
+        新闻源优先尝试 Google News RSS；若跨域或网络失败，则自动使用本地 fallback 新闻结构，避免页面空白。
+      </div>
+
+      <div class="note-grid">
+        <div class="note-chip"><b>算力芯片：</b>跟踪 GPU、ASIC、HBM、先进封装和晶圆代工，是 AI 资本开支最直接的市场表达。</div>
+        <div class="note-chip"><b>云 AI：</b>跟踪 hyperscaler 资本开支、云平台 AI 服务、模型训练和推理需求。</div>
+        <div class="note-chip"><b>电力与数据中心：</b>跟踪电力、制冷、机房、网络设备等 AI 基建约束，常影响 AI 产业链二阶交易。</div>
+        <div class="note-chip"><b>监管与出口管制：</b>跟踪芯片出口限制、反垄断、数据合规等负面扰动，通常会压制估值和风险偏好。</div>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -1693,6 +1957,58 @@
         { key: "XLP", cn: "必需", name: "STAPLE", note: "防御消费", change: -0.08, rs: -0.50, stooq: "xlp.us" },
         { key: "XLU", cn: "公用", name: "UTILITY", note: "利率敏感", change: -0.22, rs: -0.64, stooq: "xlu.us" },
         { key: "SOXX", cn: "芯片", name: "CHIPS", note: "费半ETF", change: 1.14, rs: 0.72, stooq: "soxx.us" }
+      ]
+    };
+
+    const AI_NARRATIVE = {
+      news: [
+        {
+          title: "AI chip demand remains the key earnings driver for semiconductor leaders",
+          source: "Fallback News",
+          time: "Local",
+          tag: "算力芯片",
+          sentiment: 78,
+          tickers: ["NVDA", "AVGO", "SMH"]
+        },
+        {
+          title: "Cloud platforms continue to raise AI infrastructure spending plans",
+          source: "Fallback News",
+          time: "Local",
+          tag: "云 AI",
+          sentiment: 72,
+          tickers: ["MSFT", "AMZN", "GOOGL"]
+        },
+        {
+          title: "Power and data center constraints become a second-order AI trade",
+          source: "Fallback News",
+          time: "Local",
+          tag: "数据中心",
+          sentiment: 66,
+          tickers: ["NVDA", "AVGO", "XLK"]
+        },
+        {
+          title: "Export-control headlines remain a valuation risk for advanced AI chips",
+          source: "Fallback News",
+          time: "Local",
+          tag: "监管",
+          sentiment: 42,
+          tickers: ["NVDA", "AMD", "ASML"]
+        }
+      ],
+      narratives: [
+        { key: "COMPUTE", cn: "算力芯片", score: 82, note: "GPU/HBM/ASIC/先进封装" },
+        { key: "CLOUD", cn: "云 AI", score: 74, note: "云厂商资本开支与推理需求" },
+        { key: "SOFTWARE", cn: "企业软件", score: 58, note: "AI Copilot 与企业应用变现" },
+        { key: "POWER", cn: "电力机房", score: 68, note: "数据中心、电力、制冷约束" },
+        { key: "REGULATION", cn: "监管扰动", score: 43, note: "出口管制、反垄断、合规风险" }
+      ],
+      catalysts: [
+        { symbol: "NVDA", score: 88, text: "AI 算力需求与数据中心收入仍是主叙事。", type: "positive" },
+        { symbol: "AVGO", score: 82, text: "ASIC 与网络芯片受益于定制化 AI 资本开支。", type: "positive" },
+        { symbol: "AMD", score: 63, text: "MI 系列 GPU 份额提升是核心跟踪点。", type: "neutral" },
+        { symbol: "MSFT", score: 71, text: "云 AI 与 Copilot 变现决定软件端估值弹性。", type: "positive" },
+        { symbol: "META", score: 67, text: "AI 广告效率与自研算力投入是双重变量。", type: "positive" },
+        { symbol: "TSLA", score: 48, text: "Robotaxi / FSD 叙事强，但基本面兑现分歧大。", type: "neutral" }
       ]
     };
 
@@ -1820,6 +2136,14 @@
       if (score < 60) return "分化震荡";
       if (score < 80) return "成长主导";
       return "全面 Risk-On";
+    }
+
+    function narrativeRegime(score) {
+      if (score < 30) return "叙事降温";
+      if (score < 50) return "分歧较大";
+      if (score < 70) return "温和活跃";
+      if (score < 85) return "主线强化";
+      return "叙事过热";
     }
 
     function paintHeat(id, score) {
@@ -2006,11 +2330,6 @@
       document.getElementById("goldMini").textContent = num(STRESS_DATA.gold);
     }
 
-    function average(arr, field) {
-      if (!arr.length) return 0;
-      return arr.reduce((sum, item) => sum + Number(item[field] || 0), 0) / arr.length;
-    }
-
     function calculateLeadership() {
       const aiAvg = average(MARKET.AI, "change");
       const mag7Positive = MARKET.MAG7.filter(x => x.change > 0).length / MARKET.MAG7.length;
@@ -2050,8 +2369,6 @@
       setFactorLine("sectorBreadth", s.sectorBreadth);
       setFactorLine("smallCap", s.smallCapExpansion);
       setFactorLine("defensiveLag", s.defensiveLag);
-      document.getElementById("pulseLeader").textContent = s.total + "/100";
-      document.getElementById("pulseLeaderTag").textContent = leadershipRegime(s.total);
       renderSectorMap();
       renderAIStocks();
       renderMag7Bars();
@@ -2128,6 +2445,194 @@
       });
     }
 
+    function calculateNarrativeScore() {
+      const avgNewsSentiment = average(AI_NARRATIVE.news, "sentiment");
+      const aiMomentum = scaleDirect(average(MARKET.AI, "change"), -1.8, 2.2);
+      const narrativeBreadth = AI_NARRATIVE.narratives.filter(x => x.score >= 60).length / AI_NARRATIVE.narratives.length * 100;
+      const mag7Breadth = MARKET.MAG7.filter(x => x.change > 0).length / MARKET.MAG7.length * 100;
+
+      return Math.round(
+        avgNewsSentiment * 0.32 +
+        aiMomentum * 0.30 +
+        narrativeBreadth * 0.23 +
+        mag7Breadth * 0.15
+      );
+    }
+
+    function renderNarrativeTracker() {
+      const score = calculateNarrativeScore();
+
+      document.getElementById("aiNarrativeScore").textContent = score;
+      document.getElementById("aiNarrativeLabel").textContent = narrativeRegime(score);
+      document.getElementById("pulseNarrative").textContent = score + "/100";
+      document.getElementById("pulseNarrativeTag").textContent = narrativeRegime(score);
+
+      renderNarrativeStack();
+      renderAINewsFeed();
+      renderCatalystGrid();
+    }
+
+    function renderNarrativeStack() {
+      const container = document.getElementById("narrativeStack");
+      container.innerHTML = "";
+
+      AI_NARRATIVE.narratives.forEach(item => {
+        const chip = document.createElement("div");
+        chip.className = "story-chip";
+
+        chip.innerHTML = `
+          <div class="story-head">
+            <span>${item.cn}</span>
+            <span class="story-tag">${item.key}</span>
+          </div>
+          <div class="story-meter">
+            <div class="story-fill" style="width:${clamp(item.score)}%;"></div>
+          </div>
+          <div class="story-meta">${item.score}/100 · ${item.note}</div>
+        `;
+
+        container.appendChild(chip);
+      });
+    }
+
+    function renderAINewsFeed() {
+      const container = document.getElementById("aiNewsFeed");
+      container.innerHTML = "";
+
+      AI_NARRATIVE.news.slice(0, 8).forEach(item => {
+        const card = document.createElement("div");
+        card.className = "news-card";
+
+        const tickerHtml = (item.tickers || []).slice(0, 4).map(t => `<span class="news-pill">${t}</span>`).join("");
+
+        card.innerHTML = `
+          <div class="news-top">
+            <div class="news-source">${item.source}</div>
+            <div class="news-time">${item.time}</div>
+          </div>
+          <div class="news-title">${item.title}</div>
+          <div class="news-meta">
+            <span class="news-pill">${item.tag}</span>
+            <span class="news-pill">SENT ${Math.round(item.sentiment)}</span>
+            ${tickerHtml}
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function renderCatalystGrid() {
+      const container = document.getElementById("catalystGrid");
+      container.innerHTML = "";
+
+      AI_NARRATIVE.catalysts.forEach(item => {
+        const color = colorFor(item.score);
+        const card = document.createElement("div");
+        card.className = "catalyst-card";
+        card.style.setProperty("--catalystGlow", color + "99");
+
+        card.innerHTML = `
+          <div class="catalyst-symbol">${item.symbol}</div>
+          <div class="catalyst-score">${item.score}/100</div>
+          <div class="catalyst-text">${item.text}</div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function scoreNewsTitle(title) {
+      const t = title.toLowerCase();
+      let score = 52;
+
+      const positiveWords = ["surge", "record", "beat", "growth", "demand", "deal", "partnership", "investment", "upgrade", "launch", "expansion", "accelerate"];
+      const negativeWords = ["ban", "restriction", "probe", "delay", "cut", "risk", "warning", "miss", "lawsuit", "export control", "decline"];
+
+      positiveWords.forEach(w => { if (t.includes(w)) score += 6; });
+      negativeWords.forEach(w => { if (t.includes(w)) score -= 8; });
+
+      return clamp(score, 20, 90);
+    }
+
+    function tagNewsTitle(title) {
+      const t = title.toLowerCase();
+      if (t.includes("nvidia") || t.includes("chip") || t.includes("semiconductor") || t.includes("gpu")) return "算力芯片";
+      if (t.includes("cloud") || t.includes("microsoft") || t.includes("amazon") || t.includes("google")) return "云 AI";
+      if (t.includes("data center") || t.includes("power") || t.includes("electricity")) return "数据中心";
+      if (t.includes("regulation") || t.includes("export") || t.includes("china") || t.includes("ban")) return "监管";
+      if (t.includes("software") || t.includes("copilot")) return "企业软件";
+      return "AI 综合";
+    }
+
+    function tickersFromTitle(title) {
+      const t = title.toLowerCase();
+      const pairs = [
+        ["NVDA", ["nvidia", "jensen"]],
+        ["AMD", ["amd"]],
+        ["AVGO", ["broadcom"]],
+        ["MSFT", ["microsoft", "openai", "copilot"]],
+        ["GOOGL", ["google", "alphabet", "gemini"]],
+        ["AMZN", ["amazon", "aws"]],
+        ["META", ["meta"]],
+        ["TSLA", ["tesla"]],
+        ["ASML", ["asml"]],
+        ["TSM", ["tsmc", "taiwan semiconductor"]]
+      ];
+
+      return pairs.filter(([_, words]) => words.some(w => t.includes(w))).map(([ticker]) => ticker);
+    }
+
+    async function loadAINewsRSS() {
+      const queries = [
+        "AI semiconductor Nvidia data center stocks",
+        "artificial intelligence cloud Microsoft Amazon Google stocks",
+        "AI chip export controls Nvidia AMD ASML"
+      ];
+
+      try {
+        const allNews = [];
+
+        for (const q of queries) {
+          const rssUrl = "https://news.google.com/rss/search?q=" + encodeURIComponent(q) + "&hl=en-US&gl=US&ceid=US:en";
+          const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(rssUrl);
+
+          const res = await fetch(proxyUrl, { cache: "no-store" });
+          if (!res.ok) throw new Error("RSS fetch failed");
+
+          const text = await res.text();
+          const xml = new DOMParser().parseFromString(text, "text/xml");
+          const items = [...xml.querySelectorAll("item")].slice(0, 5);
+
+          items.forEach(node => {
+            const title = node.querySelector("title")?.textContent || "";
+            const source = node.querySelector("source")?.textContent || "Google News";
+            const pubDate = node.querySelector("pubDate")?.textContent || "";
+            const time = pubDate ? new Date(pubDate).toLocaleDateString("zh-CN", { timeZone: "Asia/Shanghai" }) : "RSS";
+
+            if (title && !allNews.some(x => x.title === title)) {
+              allNews.push({
+                title,
+                source,
+                time,
+                tag: tagNewsTitle(title),
+                sentiment: scoreNewsTitle(title),
+                tickers: tickersFromTitle(title)
+              });
+            }
+          });
+        }
+
+        if (allNews.length > 0) {
+          AI_NARRATIVE.news = allNews.slice(0, 10);
+          document.getElementById("aiNewsSourceTag").textContent = "Live-ish via Google News RSS";
+        }
+      } catch (err) {
+        document.getElementById("aiNewsSourceTag").textContent = "Fallback local news";
+        console.warn("AI news RSS failed, fallback used:", err);
+      }
+    }
+
     function allMarketItems() {
       const map = new Map();
       [...MARKET.AI, ...MARKET.MAG7, ...MARKET.SECTORS].forEach(item => {
@@ -2192,9 +2697,15 @@
     renderCurve();
     renderEquity();
     renderLeadership();
+    renderNarrativeTracker();
 
     loadStooqMarketData().then(() => {
       renderLeadership();
+      renderNarrativeTracker();
+    });
+
+    loadAINewsRSS().then(() => {
+      renderNarrativeTracker();
     });
 
     window.addEventListener("mousemove", function (event) {
