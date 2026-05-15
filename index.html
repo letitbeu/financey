@@ -3,602 +3,616 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Financey 宏观金融看板</title>
 
   <style>
     :root {
-      --bg-main: #070b13;
-      --bg-card: rgba(15, 23, 42, 0.78);
-      --bg-card-soft: rgba(15, 23, 42, 0.52);
-      --border-soft: rgba(148, 163, 184, 0.16);
-      --text-main: #f8fafc;
-      --text-sub: #cbd5e1;
-      --text-muted: #94a3b8;
-
-      --blue: #38bdf8;
+      --bg: #030712;
+      --panel: rgba(15, 23, 42, 0.72);
+      --panel2: rgba(2, 6, 23, 0.55);
+      --line: rgba(148, 163, 184, 0.18);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --sub: #cbd5e1;
       --green: #22c55e;
-      --orange: #f97316;
-      --red: #ef4444;
+      --lime: #a3e635;
+      --cyan: #22d3ee;
+      --blue: #38bdf8;
       --yellow: #facc15;
+      --orange: #fb923c;
+      --red: #ef4444;
       --purple: #a78bfa;
-      --slate: #64748b;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC",
         "Microsoft YaHei", Arial, sans-serif;
+      color: var(--text);
       background:
-        radial-gradient(circle at 18% 0%, rgba(56, 189, 248, 0.13), transparent 28%),
-        radial-gradient(circle at 82% 6%, rgba(167, 139, 250, 0.11), transparent 28%),
-        linear-gradient(180deg, #050816 0%, #070b13 45%, #060914 100%);
-      color: var(--text-main);
-      min-height: 100vh;
+        radial-gradient(circle at 12% 10%, rgba(34, 211, 238, 0.18), transparent 26%),
+        radial-gradient(circle at 82% 4%, rgba(167, 139, 250, 0.17), transparent 28%),
+        radial-gradient(circle at 52% 85%, rgba(34, 197, 94, 0.10), transparent 30%),
+        linear-gradient(180deg, #020617 0%, #030712 48%, #020617 100%);
+      overflow-x: hidden;
     }
 
-    a {
-      color: inherit;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 85%);
     }
 
     .page {
-      max-width: 1280px;
+      width: min(1380px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 28px 20px 48px;
+      padding: 28px 0 52px;
+      position: relative;
+      z-index: 1;
     }
 
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .brand-kicker {
-      font-size: 12px;
-      letter-spacing: 0.2em;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    .brand-title {
-      margin: 0;
-      font-size: 30px;
-      line-height: 1.15;
-      font-weight: 850;
-      letter-spacing: -0.03em;
-    }
-
-    .brand-subtitle {
-      margin-top: 10px;
-      color: var(--text-sub);
-      font-size: 14px;
-      line-height: 1.7;
-      max-width: 800px;
-    }
-
-    .top-status {
-      min-width: 240px;
-      border: 1px solid var(--border-soft);
-      background: rgba(15, 23, 42, 0.62);
-      border-radius: 18px;
-      padding: 14px 16px;
-      text-align: right;
-    }
-
-    .top-status-label {
-      color: var(--text-muted);
-      font-size: 12px;
-      margin-bottom: 6px;
-    }
-
-    .top-status-value {
-      font-size: 14px;
-      color: var(--text-main);
-      font-weight: 750;
-    }
-
-    .module {
-      margin: 22px 0;
-      padding: 22px;
-      border-radius: 24px;
-      background: linear-gradient(180deg, rgba(20, 28, 45, 0.92), rgba(13, 18, 30, 0.96));
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
-    }
-
-    .module-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 18px;
-    }
-
-    .module-kicker {
-      font-size: 12px;
-      letter-spacing: 0.18em;
-      color: var(--text-muted);
-      margin-bottom: 5px;
-    }
-
-    .module-title {
-      margin: 0;
-      font-size: 22px;
-      line-height: 1.25;
-      font-weight: 850;
-      letter-spacing: -0.02em;
-    }
-
-    .module-desc {
-      color: var(--text-sub);
-      margin-top: 8px;
-      font-size: 13px;
-      line-height: 1.65;
-      max-width: 820px;
-    }
-
-    .module-source {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .source-pill {
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border-radius: 999px;
-      padding: 8px 11px;
-      font-size: 12px;
-      color: #bfdbfe;
-      background: rgba(59, 130, 246, 0.12);
-      border: 1px solid rgba(147, 197, 253, 0.18);
-      white-space: nowrap;
-    }
-
-    .source-pill:hover {
-      background: rgba(59, 130, 246, 0.2);
-    }
-
-    .card {
-      border-radius: 19px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-soft);
-      padding: 16px;
-      min-height: 146px;
-    }
-
-    .main-card {
-      min-height: 252px;
-    }
-
-    .card-title {
-      color: var(--text-muted);
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-
-    .card-text {
-      margin: 0;
-      font-size: 13px;
-      color: var(--text-sub);
-      line-height: 1.68;
-    }
-
-    .signal {
-      display: inline-flex;
-      align-items: center;
-      padding: 7px 11px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 10px;
-      background: rgba(56, 189, 248, 0.12);
-      color: #7dd3fc;
-      border: 1px solid rgba(125, 211, 252, 0.18);
-    }
-
-    .score {
-      font-size: 38px;
-      line-height: 1;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      margin-bottom: 10px;
-    }
-
-    .score-sub {
-      color: var(--text-muted);
-      font-size: 12px;
-      margin-bottom: 10px;
-    }
-
-    .positive {
-      color: var(--green) !important;
-    }
-
-    .negative {
-      color: var(--red) !important;
-    }
-
-    .neutral {
-      color: var(--text-main) !important;
-    }
-
-    .note {
-      margin-top: 16px;
-      padding: 13px 14px;
-      border-radius: 16px;
-      background: rgba(2, 6, 23, 0.34);
-      border: 1px solid rgba(148, 163, 184, 0.12);
-      color: var(--text-muted);
-      font-size: 12px;
-      line-height: 1.65;
-    }
-
-    .note b {
-      color: var(--text-sub);
-    }
-
-    /* Module 01: FedWatch */
-    .fed-grid {
-      display: grid;
-      grid-template-columns: 1.55fr 1fr 1fr 1fr;
-      gap: 14px;
-    }
-
-    .prob-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .big-prob {
-      font-size: 52px;
-      line-height: 0.95;
-      font-weight: 900;
-      color: #e0f2fe;
-      letter-spacing: -0.04em;
-    }
-
-    .prob-meta {
-      font-size: 12px;
-      color: var(--text-sub);
-      line-height: 1.85;
-      padding-bottom: 1px;
-    }
-
-    .mini-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .mini-tag {
-      border-radius: 999px;
-      padding: 6px 9px;
-      font-size: 12px;
-      color: #dbeafe;
-      background: rgba(59, 130, 246, 0.11);
-      border: 1px solid rgba(147, 197, 253, 0.14);
-    }
-
-    .bar-section {
-      margin-top: 8px;
-    }
-
-    .bar-labels,
-    .bar-values {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 7px;
-    }
-
-    .bar-values {
-      margin-top: 7px;
-      margin-bottom: 0;
-      color: var(--text-main);
-      font-weight: 800;
-    }
-
-    .bars {
-      display: flex;
-      height: 13px;
-      border-radius: 999px;
-      overflow: hidden;
-      background: rgba(148, 163, 184, 0.15);
-    }
-
-    .bar {
-      height: 100%;
-      transition: width 0.45s ease;
-    }
-
-    .bar-cut {
-      background: var(--blue);
-    }
-
-    .bar-hold {
-      background: var(--slate);
-    }
-
-    .bar-hike {
-      background: var(--orange);
-    }
-
-    .change-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .change-item {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      color: var(--text-sub);
-      font-size: 13px;
-      padding-bottom: 9px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.10);
-    }
-
-    .change-item:last-child {
-      border-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .change-item b {
-      color: var(--text-main);
-      white-space: nowrap;
-    }
-
-    .indicator-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-top: 14px;
-    }
-
-    .indicator-card {
-      border-radius: 18px;
-      background: var(--bg-card-soft);
-      border: 1px solid rgba(148, 163, 184, 0.12);
-      padding: 14px;
-    }
-
-    .indicator-name {
-      color: var(--text-muted);
-      font-size: 12px;
-      margin-bottom: 8px;
-    }
-
-    .indicator-value {
-      font-size: 22px;
-      font-weight: 850;
-      margin-bottom: 8px;
-    }
-
-    .indicator-desc {
-      color: var(--text-sub);
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    /* Module 02: Treasury */
-    .treasury-grid {
-      display: grid;
-      grid-template-columns: 1.45fr 1fr 1fr 1fr;
-      gap: 14px;
-    }
-
-    .treasury-main-card {
-      min-height: 230px;
-    }
-
-    .yield-curve-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+      gap: 20px;
       margin-bottom: 22px;
     }
 
-    .yield-point {
-      border-radius: 16px;
-      background: rgba(2, 6, 23, 0.28);
-      border: 1px solid rgba(148, 163, 184, 0.10);
-      padding: 14px;
-    }
-
-    .yield-label {
-      color: var(--text-muted);
+    .eyebrow {
+      color: var(--cyan);
       font-size: 12px;
-      margin-bottom: 8px;
+      letter-spacing: 0.24em;
+      font-weight: 800;
+      text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
     }
 
-    .yield-value {
-      font-size: 28px;
+    h1 {
+      margin: 8px 0 0;
+      font-size: clamp(30px, 4vw, 56px);
+      letter-spacing: -0.06em;
+      line-height: 0.98;
+    }
+
+    .clock {
+      min-width: 250px;
+      text-align: right;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .clock b {
+      display: block;
+      margin-top: 6px;
+      color: var(--text);
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .module {
+      margin: 16px 0;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0.72), rgba(2, 6, 23, 0.68));
+      box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(14px);
+    }
+
+    .module-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .module-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      color: var(--sub);
+      font-weight: 850;
+      letter-spacing: 0.08em;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--cyan);
+      box-shadow: 0 0 20px var(--cyan);
+    }
+
+    .tag {
+      color: var(--muted);
+      font-size: 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: rgba(2, 6, 23, 0.45);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr 0.9fr;
+      gap: 16px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 24px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::after {
+      content: "";
+      position: absolute;
+      inset: -80px;
+      background: radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.12), transparent 35%);
+      pointer-events: none;
+    }
+
+    .mega-gauge {
+      min-height: 430px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      isolation: isolate;
+    }
+
+    .orb {
+      width: min(360px, 82vw);
+      height: min(360px, 82vw);
+      border-radius: 50%;
+      background:
+        conic-gradient(from 220deg,
+          #ef4444 0deg,
+          #fb923c 48deg,
+          #facc15 92deg,
+          #22d3ee 145deg,
+          #22c55e 220deg,
+          rgba(30, 41, 59, 0.65) 220deg,
+          rgba(30, 41, 59, 0.65) 360deg);
+      display: grid;
+      place-items: center;
+      position: relative;
+      box-shadow:
+        0 0 60px rgba(34, 211, 238, 0.24),
+        0 0 120px rgba(34, 197, 94, 0.13);
+    }
+
+    .orb::before {
+      content: "";
+      width: 76%;
+      height: 76%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(56, 189, 248, 0.16), transparent 45%),
+        #020617;
+      border: 1px solid rgba(148, 163, 184, 0.20);
+      position: absolute;
+    }
+
+    .orb::after {
+      content: "";
+      position: absolute;
+      width: 88%;
+      height: 88%;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.06);
+      animation: pulse 2.6s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.96); opacity: 0.35; }
+      70% { transform: scale(1.08); opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    .needle {
+      position: absolute;
+      width: 5px;
+      height: 128px;
+      top: 48px;
+      border-radius: 999px;
+      background: white;
+      transform-origin: center 132px;
+      transform: rotate(-110deg);
+      z-index: 3;
+      box-shadow: 0 0 18px rgba(255,255,255,0.75);
+    }
+
+    .orb-center {
+      position: relative;
+      z-index: 4;
+      text-align: center;
+    }
+
+    .big-score {
+      font-size: clamp(74px, 9vw, 112px);
+      line-height: 0.82;
+      font-weight: 950;
+      letter-spacing: -0.08em;
+    }
+
+    .big-label {
+      margin-top: 12px;
+      font-size: 22px;
       font-weight: 900;
-      letter-spacing: -0.03em;
-      margin-bottom: 6px;
+      color: var(--cyan);
+      text-shadow: 0 0 20px rgba(34, 211, 238, 0.55);
     }
 
-    .yield-change {
+    .scale {
+      width: min(360px, 82vw);
+      display: flex;
+      justify-content: space-between;
+      margin-top: 14px;
+      color: var(--muted);
       font-size: 12px;
       font-weight: 800;
     }
 
-    .curve-visual {
-      margin-top: 8px;
+    .heat-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      height: 100%;
     }
 
-    .curve-line {
-      position: relative;
-      height: 72px;
-      border-radius: 16px;
-      background:
-        linear-gradient(180deg, rgba(148, 163, 184, 0.08), rgba(148, 163, 184, 0.02));
-      border: 1px solid rgba(148, 163, 184, 0.10);
+    .heat {
+      border-radius: 20px;
+      padding: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      background: rgba(2, 6, 23, 0.38);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 180px;
       overflow: hidden;
+      position: relative;
     }
 
-    .curve-line::before {
+    .heat::before {
       content: "";
       position: absolute;
-      left: 10%;
-      right: 10%;
-      top: 50%;
-      height: 2px;
-      background: rgba(148, 163, 184, 0.22);
+      inset: auto 0 0 0;
+      height: var(--h);
+      background: linear-gradient(180deg, rgba(34,211,238,0.10), var(--c));
+      opacity: 0.85;
     }
 
-    .curve-dot {
-      position: absolute;
-      width: 13px;
-      height: 13px;
-      border-radius: 999px;
-      background: var(--blue);
-      box-shadow: 0 0 18px rgba(56, 189, 248, 0.8);
-      transform: translate(-50%, -50%);
+    .heat-name, .heat-score, .heat-sub {
+      position: relative;
+      z-index: 2;
     }
 
-    #curveDot2y {
-      left: 15%;
-    }
-
-    #curveDot10y {
-      left: 50%;
-    }
-
-    #curveDot30y {
-      left: 85%;
-    }
-
-    .curve-axis {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 8px 0;
-      color: var(--text-muted);
+    .heat-name {
+      color: var(--muted);
       font-size: 12px;
+      line-height: 1.25;
+      min-height: 32px;
     }
 
-    /* Module 03: Equity */
-    .equity-grid {
+    .heat-score {
+      font-size: 34px;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+    }
+
+    .heat-sub {
+      color: var(--sub);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .matrix {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
     }
 
-    .index-card {
-      min-height: 170px;
+    .metric {
+      min-height: 96px;
+      border-radius: 18px;
+      padding: 13px;
+      background: rgba(2, 6, 23, 0.42);
+      border: 1px solid var(--line);
     }
 
-    .index-value {
-      font-size: 30px;
-      font-weight: 900;
-      letter-spacing: -0.03em;
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
       margin-bottom: 8px;
     }
 
-    .index-change {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 13px;
-      font-weight: 850;
-      margin-bottom: 12px;
-      background: rgba(148, 163, 184, 0.10);
+    .metric b {
+      display: block;
+      font-size: 26px;
+      letter-spacing: -0.05em;
     }
 
-    .placeholder-module {
-      margin-top: 18px;
+    .metric em {
+      display: block;
+      margin-top: 6px;
+      font-style: normal;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .terminal-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .tile {
+      border: 1px solid var(--line);
+      background: var(--panel2);
       border-radius: 22px;
-      border: 1px dashed rgba(148, 163, 184, 0.24);
-      background: rgba(15, 23, 42, 0.34);
-      padding: 24px;
-      color: var(--text-muted);
+      padding: 16px;
+      min-height: 150px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tile::before {
+      content: "";
+      position: absolute;
+      inset: auto -20% -40% -20%;
+      height: 85%;
+      background: radial-gradient(circle, var(--glow), transparent 60%);
+      opacity: 0.22;
+    }
+
+    .tile-name {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      font-weight: 850;
+    }
+
+    .tile-value {
+      margin-top: 16px;
+      font-size: 40px;
+      line-height: 0.9;
+      font-weight: 950;
+      letter-spacing: -0.06em;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tile-change {
+      margin-top: 13px;
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 900;
+      background: rgba(148, 163, 184, 0.11);
+      position: relative;
+      z-index: 2;
+    }
+
+    .positive { color: var(--green); }
+    .negative { color: var(--red); }
+    .neutral { color: var(--sub); }
+
+    .fed-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 16px;
+    }
+
+    .rate-visual {
+      height: 240px;
+      display: grid;
+      place-items: center;
+    }
+
+    .rate-circle {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background:
+        conic-gradient(var(--cyan) 0deg, var(--cyan) var(--cutDeg), rgba(100,116,139,0.5) var(--cutDeg), rgba(100,116,139,0.5) 360deg);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 50px rgba(34, 211, 238, 0.18);
+      position: relative;
+    }
+
+    .rate-circle::before {
+      content: "";
+      position: absolute;
+      width: 156px;
+      height: 156px;
+      border-radius: 50%;
+      background: #020617;
+    }
+
+    .rate-inside {
+      position: relative;
+      z-index: 2;
       text-align: center;
-      font-size: 14px;
-      line-height: 1.7;
     }
 
-    @media (max-width: 1080px) {
-      .fed-grid,
-      .treasury-grid {
-        grid-template-columns: 1fr 1fr;
+    .rate-inside b {
+      display: block;
+      font-size: 52px;
+      letter-spacing: -0.08em;
+      line-height: 0.9;
+    }
+
+    .rate-inside span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .prob-bars {
+      display: grid;
+      gap: 12px;
+      align-content: center;
+    }
+
+    .prob {
+      display: grid;
+      grid-template-columns: 54px 1fr 58px;
+      gap: 10px;
+      align-items: center;
+      color: var(--sub);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .track {
+      height: 13px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.15);
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      background: var(--blue);
+      box-shadow: 0 0 18px currentColor;
+    }
+
+    .curve-box {
+      height: 310px;
+      padding: 12px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .axis-label {
+      fill: #94a3b8;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .curve-line-svg {
+      fill: none;
+      stroke: url(#curveGrad);
+      stroke-width: 5;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 8px rgba(34,211,238,0.8));
+    }
+
+    .curve-dot-svg {
+      fill: #e0f2fe;
+      stroke: #22d3ee;
+      stroke-width: 3;
+      filter: drop-shadow(0 0 8px rgba(34,211,238,0.8));
+    }
+
+    .bottom-strip {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .mini {
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(2, 6, 23, 0.42);
+      padding: 12px;
+    }
+
+    .mini span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .mini b {
+      font-size: 20px;
+      letter-spacing: -0.04em;
+    }
+
+    @media (max-width: 1100px) {
+      .hero-grid,
+      .section-grid,
+      .fed-layout {
+        grid-template-columns: 1fr;
       }
 
-      .main-card,
-      .treasury-main-card {
-        grid-column: span 2;
+      .terminal-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
 
-      .indicator-grid,
-      .equity-grid {
-        grid-template-columns: 1fr 1fr;
+      .bottom-strip {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .heat-grid {
+        grid-template-columns: repeat(5, minmax(120px, 1fr));
+        overflow-x: auto;
       }
     }
 
-    @media (max-width: 720px) {
-      .page {
-        padding: 22px 14px 38px;
-      }
-
+    @media (max-width: 640px) {
       .topbar {
         flex-direction: column;
       }
 
-      .top-status {
-        width: 100%;
+      .clock {
         text-align: left;
       }
 
-      .module {
-        padding: 17px;
-      }
-
-      .module-header {
-        flex-direction: column;
-      }
-
-      .module-source {
-        justify-content: flex-start;
-      }
-
-      .fed-grid,
-      .treasury-grid,
-      .indicator-grid,
-      .equity-grid {
+      .terminal-grid,
+      .matrix,
+      .bottom-strip {
         grid-template-columns: 1fr;
       }
 
-      .main-card,
-      .treasury-main-card {
-        grid-column: span 1;
+      .orb {
+        width: 260px;
+        height: 260px;
       }
 
-      .prob-row {
-        flex-direction: column;
-        align-items: flex-start;
+      .needle {
+        height: 94px;
+        transform-origin: center 99px;
+        top: 36px;
       }
 
-      .big-prob {
-        font-size: 48px;
-      }
-
-      .yield-curve-row {
-        grid-template-columns: 1fr;
+      .big-score {
+        font-size: 78px;
       }
     }
   </style>
@@ -608,349 +622,307 @@
   <main class="page">
     <header class="topbar">
       <div>
-        <div class="brand-kicker">GLOBAL MACRO DASHBOARD</div>
-        <h1 class="brand-title">Financey 宏观金融看板</h1>
-        <div class="brand-subtitle">
-          聚焦美联储政策预期、美债收益率曲线、美股指数表现与传统金融市场风险偏好。当前版本为静态数据结构，后续可接入 FRED、Yahoo Finance、Alpha Vantage 或其他金融数据源。
-        </div>
+        <div class="eyebrow">GLOBAL MACRO RISK TERMINAL</div>
+        <h1>Financey 宏观金融看板</h1>
       </div>
-
-      <div class="top-status">
-        <div class="top-status-label">北京时间</div>
-        <div class="top-status-value" id="beijingNow">--</div>
+      <div class="clock">
+        北京时间
+        <b id="beijingNow">--</b>
       </div>
     </header>
 
-    <!-- Module 01 -->
     <section class="module">
-      <div class="module-header">
-        <div>
-          <div class="module-kicker">MODULE 01 · FED WATCH</div>
-          <h2 class="module-title">美联储降息概率与政策预期</h2>
-          <div class="module-desc">
-            以 CME FedWatch 为核心口径，跟踪下次 FOMC 的降息、维持、加息概率，并转化为适合宏观金融市场观察的“降息压力指数”。
+      <div class="module-head">
+        <div class="module-title"><span class="dot"></span> RISK ASSET MACRO GAUGE</div>
+        <div class="tag">0 = 极不利 / 100 = 极有利</div>
+      </div>
+
+      <div class="hero-grid">
+        <div class="panel mega-gauge">
+          <div class="orb">
+            <div class="needle" id="riskNeedle"></div>
+            <div class="orb-center">
+              <div class="big-score" id="riskScore">--</div>
+              <div class="big-label" id="riskLabel">--</div>
+            </div>
+          </div>
+          <div class="scale">
+            <span>RISK-OFF</span>
+            <span>NEUTRAL</span>
+            <span>RISK-ON</span>
           </div>
         </div>
 
-        <div class="module-source">
-          <a class="source-pill" href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank">
-            CME FedWatch →
-          </a>
+        <div class="panel">
+          <div class="heat-grid">
+            <div class="heat" id="heatFed">
+              <div class="heat-name">FED<br>宽松</div>
+              <div class="heat-score" id="fedFactor">--</div>
+              <div class="heat-sub">政策</div>
+            </div>
+            <div class="heat" id="heatBond">
+              <div class="heat-name">美债<br>压力</div>
+              <div class="heat-score" id="bondFactor">--</div>
+              <div class="heat-sub">利率</div>
+            </div>
+            <div class="heat" id="heatEquity">
+              <div class="heat-name">美股<br>动能</div>
+              <div class="heat-score" id="equityFactor">--</div>
+              <div class="heat-sub">权益</div>
+            </div>
+            <div class="heat" id="heatStress">
+              <div class="heat-name">波动<br>信用</div>
+              <div class="heat-score" id="stressFactor">--</div>
+              <div class="heat-sub">压力</div>
+            </div>
+            <div class="heat" id="heatDollar">
+              <div class="heat-name">美元<br>避险</div>
+              <div class="heat-score" id="dollarFactor">--</div>
+              <div class="heat-sub">外汇</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="matrix">
+            <div class="metric">
+              <span>VIX</span>
+              <b id="vixValue">--</b>
+              <em id="vixTag">--</em>
+            </div>
+            <div class="metric">
+              <span>MOVE</span>
+              <b id="moveValue">--</b>
+              <em id="moveTag">--</em>
+            </div>
+            <div class="metric">
+              <span>HY OAS</span>
+              <b id="hyValue">--</b>
+              <em id="hyTag">--</em>
+            </div>
+            <div class="metric">
+              <span>DXY</span>
+              <b id="dxyValue">--</b>
+              <em id="dxyTag">--</em>
+            </div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="fed-grid">
-        <div class="card main-card">
-          <div class="card-title">下次 FOMC 降息概率</div>
+    <div class="section-grid">
+      <section class="module">
+        <div class="module-head">
+          <div class="module-title"><span class="dot"></span> FED WATCH</div>
+          <div class="tag">CME 口径预留</div>
+        </div>
 
-          <div class="prob-row">
-            <div class="big-prob" id="cutProb">--%</div>
-            <div class="prob-meta">
-              <div id="meetingDate">下次会议：--</div>
-              <div id="currentRange">当前利率区间：--</div>
-              <div id="updatedAt">更新时间：--</div>
+        <div class="fed-layout">
+          <div class="panel rate-visual">
+            <div class="rate-circle" id="rateCircle">
+              <div class="rate-inside">
+                <b id="cutProb">--%</b>
+                <span>降息概率</span>
+              </div>
             </div>
           </div>
 
-          <div class="bar-section">
-            <div class="bar-labels">
+          <div class="panel prob-bars">
+            <div class="prob">
               <span>降息</span>
+              <div class="track"><div class="fill" id="cutFill"></div></div>
+              <b id="cutVal">--</b>
+            </div>
+            <div class="prob">
               <span>维持</span>
+              <div class="track"><div class="fill" id="holdFill" style="background:#64748b"></div></div>
+              <b id="holdVal">--</b>
+            </div>
+            <div class="prob">
               <span>加息</span>
+              <div class="track"><div class="fill" id="hikeFill" style="background:#fb923c"></div></div>
+              <b id="hikeVal">--</b>
             </div>
 
-            <div class="bars">
-              <div class="bar bar-cut" id="cutBar"></div>
-              <div class="bar bar-hold" id="holdBar"></div>
-              <div class="bar bar-hike" id="hikeBar"></div>
-            </div>
-
-            <div class="bar-values">
-              <span id="cutValue">--%</span>
-              <span id="holdValue">--%</span>
-              <span id="hikeValue">--%</span>
-            </div>
-          </div>
-
-          <div class="mini-tags">
-            <span class="mini-tag" id="expectedRate">隐含政策利率：--</span>
-            <span class="mini-tag" id="expectedCuts">年内隐含降息：--</span>
-            <span class="mini-tag" id="policyBias">政策定价：--</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">市场定价结论</div>
-          <div class="signal" id="marketSignal">--</div>
-          <p class="card-text" id="marketConclusion">等待数据更新。</p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">降息压力指数</div>
-          <div class="score" id="pressureScore">--</div>
-          <div class="score-sub">0 = 无宽松交易，100 = 极端宽松定价</div>
-          <p class="card-text" id="pressureText">等待数据更新。</p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">降息概率变化</div>
-          <div class="change-list">
-            <div class="change-item">
-              <span>较昨日</span>
-              <b id="change1d">--</b>
-            </div>
-            <div class="change-item">
-              <span>较一周前</span>
-              <b id="change1w">--</b>
-            </div>
-            <div class="change-item">
-              <span>较一月前</span>
-              <b id="change1m">--</b>
+            <div class="bottom-strip">
+              <div class="mini"><span>会议</span><b id="meetingDate">--</b></div>
+              <div class="mini"><span>区间</span><b id="rateRange">--</b></div>
+              <div class="mini"><span>1D</span><b id="chg1d">--</b></div>
+              <div class="mini"><span>1W</span><b id="chg1w">--</b></div>
+              <div class="mini"><span>1M</span><b id="chg1m">--</b></div>
+              <div class="mini"><span>压力</span><b id="fedPressure">--</b></div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="indicator-grid">
-        <div class="indicator-card">
-          <div class="indicator-name">宏观方向</div>
-          <div class="indicator-value" id="macroDirection">--</div>
-          <div class="indicator-desc" id="macroDirectionDesc">根据降息概率与变化速度判断宏观风向。</div>
+      <section class="module">
+        <div class="module-head">
+          <div class="module-title"><span class="dot"></span> U.S. TREASURY CURVE</div>
+          <div class="tag">2Y / 10Y / 30Y</div>
         </div>
 
-        <div class="indicator-card">
-          <div class="indicator-name">美股影响</div>
-          <div class="indicator-value" id="equityImpact">--</div>
-          <div class="indicator-desc" id="equityImpactDesc">降息预期上升通常利好长久期资产和成长股估值。</div>
+        <div class="panel curve-box">
+          <svg viewBox="0 0 560 260">
+            <defs>
+              <linearGradient id="curveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#22d3ee" />
+                <stop offset="50%" stop-color="#a78bfa" />
+                <stop offset="100%" stop-color="#22c55e" />
+              </linearGradient>
+            </defs>
+
+            <line x1="55" y1="210" x2="510" y2="210" stroke="rgba(148,163,184,0.22)" />
+            <line x1="55" y1="35" x2="55" y2="210" stroke="rgba(148,163,184,0.18)" />
+
+            <path id="yieldPath" class="curve-line-svg" d="" />
+            <circle id="dot2y" class="curve-dot-svg" r="7" />
+            <circle id="dot10y" class="curve-dot-svg" r="7" />
+            <circle id="dot30y" class="curve-dot-svg" r="7" />
+
+            <text x="90" y="240" class="axis-label">2Y</text>
+            <text x="270" y="240" class="axis-label">10Y</text>
+            <text x="445" y="240" class="axis-label">30Y</text>
+
+            <text id="label2y" x="75" y="30" class="axis-label">--</text>
+            <text id="label10y" x="255" y="30" class="axis-label">--</text>
+            <text id="label30y" x="430" y="30" class="axis-label">--</text>
+          </svg>
         </div>
 
-        <div class="indicator-card">
-          <div class="indicator-name">债市影响</div>
-          <div class="indicator-value" id="bondImpact">--</div>
-          <div class="indicator-desc" id="bondImpactDesc">降息预期会影响短端利率、长端期限溢价和曲线形态。</div>
+        <div class="bottom-strip">
+          <div class="mini"><span>2Y</span><b id="us2y">--</b></div>
+          <div class="mini"><span>10Y</span><b id="us10y">--</b></div>
+          <div class="mini"><span>30Y</span><b id="us30y">--</b></div>
+          <div class="mini"><span>10Y-2Y</span><b id="spread">--</b></div>
+          <div class="mini"><span>曲线</span><b id="curveSignal">--</b></div>
+          <div class="mini"><span>估值压力</span><b id="bondPressure">--</b></div>
         </div>
-
-        <div class="indicator-card">
-          <div class="indicator-name">更新频率</div>
-          <div class="indicator-value">08:00</div>
-          <div class="indicator-desc">北京时间每日早上 8 点更新；当前版本为无 API 静态数据结构。</div>
-        </div>
-      </div>
-
-      <div class="note">
-        数据说明：当前版本没有接 CME 官方 API，所以这里先使用本地数据结构展示。以后只需要改代码里的
-        <b>FEDWATCH_DATA</b>，或者把它替换为 Supabase / Vercel KV / 官方 API 返回值，整个模块就能自动刷新。
-      </div>
-    </section>
-
-    <!-- Module 02 -->
-    <section class="module">
-      <div class="module-header">
-        <div>
-          <div class="module-kicker">MODULE 02 · U.S. TREASURY</div>
-          <h2 class="module-title">美债收益率曲线</h2>
-          <div class="module-desc">
-            跟踪 2Y、10Y、30Y 美债收益率，以及 10Y-2Y 利差，用于判断市场对经济增长、通胀、降息路径和期限溢价的定价。
-          </div>
-        </div>
-
-        <div class="module-source">
-          <a class="source-pill" href="https://fred.stlouisfed.org/" target="_blank">
-            FRED →
-          </a>
-        </div>
-      </div>
-
-      <div class="treasury-grid">
-        <div class="card treasury-main-card">
-          <div class="card-title">收益率曲线核心状态</div>
-
-          <div class="yield-curve-row">
-            <div class="yield-point">
-              <div class="yield-label">2Y Treasury</div>
-              <div class="yield-value" id="us2y">--</div>
-              <div class="yield-change" id="us2yChange">--</div>
-            </div>
-
-            <div class="yield-point">
-              <div class="yield-label">10Y Treasury</div>
-              <div class="yield-value" id="us10y">--</div>
-              <div class="yield-change" id="us10yChange">--</div>
-            </div>
-
-            <div class="yield-point">
-              <div class="yield-label">30Y Treasury</div>
-              <div class="yield-value" id="us30y">--</div>
-              <div class="yield-change" id="us30yChange">--</div>
-            </div>
-          </div>
-
-          <div class="curve-visual">
-            <div class="curve-line">
-              <span id="curveDot2y" class="curve-dot"></span>
-              <span id="curveDot10y" class="curve-dot"></span>
-              <span id="curveDot30y" class="curve-dot"></span>
-            </div>
-            <div class="curve-axis">
-              <span>2Y</span>
-              <span>10Y</span>
-              <span>30Y</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">10Y - 2Y 利差</div>
-          <div class="score" id="spread10y2y">--</div>
-          <div class="signal" id="curveSignal">--</div>
-          <p class="card-text" id="curveConclusion">等待数据更新。</p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">债市宏观含义</div>
-          <div class="signal" id="bondMacroSignal">--</div>
-          <p class="card-text" id="bondMacroText">等待数据更新。</p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">风险资产影响</div>
-          <div class="signal" id="bondRiskSignal">--</div>
-          <p class="card-text" id="bondRiskText">等待数据更新。</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Module 03 -->
-    <section class="module">
-      <div class="module-header">
-        <div>
-          <div class="module-kicker">MODULE 03 · EQUITY MARKET</div>
-          <h2 class="module-title">美股指数表现</h2>
-          <div class="module-desc">
-            跟踪标普 500、纳斯达克 100、道琼斯、罗素 2000，用于判断美股风险偏好、成长股强弱、价值股表现和小盘股市场广度。
-          </div>
-        </div>
-
-        <div class="module-source">
-          <a class="source-pill" href="https://finance.yahoo.com/" target="_blank">
-            Yahoo Finance →
-          </a>
-        </div>
-      </div>
-
-      <div class="equity-grid">
-        <div class="card index-card">
-          <div class="card-title">S&P 500</div>
-          <div class="index-value" id="spxValue">--</div>
-          <div class="index-change" id="spxChange">--</div>
-          <p class="card-text" id="spxText">美国大盘股核心风险资产。</p>
-        </div>
-
-        <div class="card index-card">
-          <div class="card-title">Nasdaq 100</div>
-          <div class="index-value" id="ndxValue">--</div>
-          <div class="index-change" id="ndxChange">--</div>
-          <p class="card-text" id="ndxText">科技股、成长股和长久期权益资产代表。</p>
-        </div>
-
-        <div class="card index-card">
-          <div class="card-title">Dow Jones</div>
-          <div class="index-value" id="djiValue">--</div>
-          <div class="index-change" id="djiChange">--</div>
-          <p class="card-text" id="djiText">传统蓝筹、工业股和价值股代表。</p>
-        </div>
-
-        <div class="card index-card">
-          <div class="card-title">Russell 2000</div>
-          <div class="index-value" id="rutValue">--</div>
-          <div class="index-change" id="rutChange">--</div>
-          <p class="card-text" id="rutText">小盘股与美国内需风险偏好代表。</p>
-        </div>
-      </div>
-
-      <div class="indicator-grid">
-        <div class="indicator-card">
-          <div class="indicator-name">美股风险偏好</div>
-          <div class="indicator-value" id="equityRiskAppetite">--</div>
-          <div class="indicator-desc" id="equityRiskDesc">根据主要指数涨跌与整体方向判断。</div>
-        </div>
-
-        <div class="indicator-card">
-          <div class="indicator-name">成长股强弱</div>
-          <div class="indicator-value" id="growthStrength">--</div>
-          <div class="indicator-desc" id="growthStrengthDesc">纳指强于标普，通常代表成长股风险偏好更强。</div>
-        </div>
-
-        <div class="indicator-card">
-          <div class="indicator-name">市场广度</div>
-          <div class="indicator-value" id="marketBreadth">--</div>
-          <div class="indicator-desc" id="marketBreadthDesc">罗素 2000 强弱用于观察行情是否从大盘龙头扩散。</div>
-        </div>
-
-        <div class="indicator-card">
-          <div class="indicator-name">股债联动</div>
-          <div class="indicator-value" id="stockBondSignal">--</div>
-          <div class="indicator-desc" id="stockBondDesc">结合 10Y 美债变化与美股表现判断估值压力。</div>
-        </div>
-      </div>
-    </section>
-
-    <div class="placeholder-module">
-      后续模块预留：美元指数 DXY、黄金、VIX、MOVE、信用利差、CPI、PCE、非农、PMI、金融条件指数。
+      </section>
     </div>
+
+    <section class="module">
+      <div class="module-head">
+        <div class="module-title"><span class="dot"></span> EQUITY MARKET HEATMAP</div>
+        <div class="tag">S&P 500 / Nasdaq 100 / Dow / Russell 2000</div>
+      </div>
+
+      <div class="terminal-grid">
+        <div class="tile" style="--glow: rgba(34,197,94,0.85)">
+          <div class="tile-name">S&P 500</div>
+          <div class="tile-value" id="spxValue">--</div>
+          <div class="tile-change" id="spxChange">--</div>
+        </div>
+        <div class="tile" style="--glow: rgba(34,211,238,0.85)">
+          <div class="tile-name">NASDAQ 100</div>
+          <div class="tile-value" id="ndxValue">--</div>
+          <div class="tile-change" id="ndxChange">--</div>
+        </div>
+        <div class="tile" style="--glow: rgba(167,139,250,0.85)">
+          <div class="tile-name">DOW JONES</div>
+          <div class="tile-value" id="djiValue">--</div>
+          <div class="tile-change" id="djiChange">--</div>
+        </div>
+        <div class="tile" style="--glow: rgba(250,204,21,0.85)">
+          <div class="tile-name">RUSSELL 2000</div>
+          <div class="tile-value" id="rutValue">--</div>
+          <div class="tile-change" id="rutChange">--</div>
+        </div>
+      </div>
+
+      <div class="bottom-strip">
+        <div class="mini"><span>风险偏好</span><b id="riskAppetite">--</b></div>
+        <div class="mini"><span>成长强弱</span><b id="growthSignal">--</b></div>
+        <div class="mini"><span>市场广度</span><b id="breadthSignal">--</b></div>
+        <div class="mini"><span>股债组合</span><b id="stockBond">--</b></div>
+        <div class="mini"><span>DXY</span><b id="dxyMini">--</b></div>
+        <div class="mini"><span>Gold</span><b id="goldMini">--</b></div>
+      </div>
+    </section>
   </main>
 
   <script>
     const FEDWATCH_DATA = {
       updatedAt: "2026-05-15 08:00 北京时间",
-      source: "CME FedWatch",
-      currentRange: "3.50% - 3.75%",
-      meetingDate: "2026-06-17",
-
+      currentRange: "3.50%-3.75%",
+      meetingDate: "06/17",
       cutProb: 42.5,
       holdProb: 54.0,
       hikeProb: 3.5,
-
       change1d: -2.1,
       change1w: 8.4,
       change1m: 15.7,
-
-      expectedPolicyRate: "3.42%",
       expectedCuts2026: 1.2
     };
 
     const TREASURY_DATA = {
-      updatedAt: "2026-05-15 08:00 北京时间",
-
       us2y: 3.62,
       us10y: 4.08,
       us30y: 4.68,
-
       us2yChange: -3.5,
       us10yChange: -2.1,
       us30yChange: 0.8
     };
 
     const EQUITY_DATA = {
-      updatedAt: "2026-05-15 08:00 北京时间",
-
       spx: 6845.2,
       spxChange: 0.42,
-
       ndx: 25280.7,
       ndxChange: 0.76,
-
       dji: 47720.1,
       djiChange: 0.18,
-
       rut: 2475.6,
       rutChange: -0.31
     };
 
-    function formatBeijingTime() {
-      const now = new Date();
+    const STRESS_DATA = {
+      vix: 15.8,
+      move: 91.5,
+      hyOas: 3.25,
+      dxy: 98.7,
+      dxyChange: -0.28,
+      gold: 3580.4,
+      goldChange: 0.36
+    };
 
-      return new Intl.DateTimeFormat("zh-CN", {
+    function clamp(x, min = 0, max = 100) {
+      return Math.min(max, Math.max(min, x));
+    }
+
+    function scaleDirect(value, bad, good) {
+      return clamp(((value - bad) / (good - bad)) * 100);
+    }
+
+    function scaleInverse(value, good, bad) {
+      return clamp(((bad - value) / (bad - good)) * 100);
+    }
+
+    function pct(x, d = 1) {
+      return Number(x).toFixed(d) + "%";
+    }
+
+    function signedPct(x) {
+      const n = Number(x);
+      return (n > 0 ? "+" : "") + n.toFixed(2) + "%";
+    }
+
+    function bp(x) {
+      const n = Number(x);
+      return (n > 0 ? "+" : "") + n.toFixed(1) + "bp";
+    }
+
+    function num(x, d = 1) {
+      return Number(x).toLocaleString("en-US", { maximumFractionDigits: d });
+    }
+
+    function setClass(id, value) {
+      const el = document.getElementById(id);
+      el.classList.remove("positive", "negative", "neutral");
+      el.classList.add(value > 0 ? "positive" : value < 0 ? "negative" : "neutral");
+    }
+
+    function clock() {
+      document.getElementById("beijingNow").textContent = new Intl.DateTimeFormat("zh-CN", {
         timeZone: "Asia/Shanghai",
         year: "numeric",
         month: "2-digit",
@@ -959,401 +931,214 @@
         minute: "2-digit",
         second: "2-digit",
         hour12: false
-      }).format(now);
+      }).format(new Date());
     }
 
-    function updateClock() {
-      document.getElementById("beijingNow").textContent = formatBeijingTime();
+    function fedFactor() {
+      const d = FEDWATCH_DATA;
+      return Math.round(clamp(d.cutProb * 0.65 + Math.max(d.change1w, 0) * 1.25 + d.expectedCuts2026 * 8 - d.hikeProb * 1.2));
     }
 
-    function formatPercent(value) {
-      const num = Number(value || 0);
-      return num.toFixed(1) + "%";
+    function bondFactor() {
+      const d = TREASURY_DATA;
+      const spread = (d.us10y - d.us2y) * 100;
+      const level = scaleInverse(d.us10y, 3.2, 5.2);
+      const change = scaleInverse(d.us10yChange, -12, 12);
+      const curve = spread < -60 ? 25 : spread < 0 ? 45 : spread < 120 ? 70 : 55;
+      return Math.round(level * 0.45 + change * 0.35 + curve * 0.2);
     }
 
-    function formatChange(value) {
-      const num = Number(value || 0);
-      const sign = num > 0 ? "+" : "";
-      return sign + num.toFixed(1) + " pct";
+    function equityFactor() {
+      const d = EQUITY_DATA;
+      const avg = (d.spxChange + d.ndxChange + d.djiChange + d.rutChange) / 4;
+      const growth = d.ndxChange - d.spxChange;
+      const breadth = d.rutChange - d.spxChange;
+      return Math.round(
+        scaleDirect(avg, -1.5, 1.5) * 0.55 +
+        scaleDirect(growth, -0.8, 0.8) * 0.2 +
+        scaleDirect(breadth, -0.9, 0.9) * 0.25
+      );
     }
 
-    function formatYield(value) {
-      return Number(value || 0).toFixed(2) + "%";
+    function stressFactor() {
+      const d = STRESS_DATA;
+      return Math.round(
+        scaleInverse(d.vix, 12, 32) * 0.4 +
+        scaleInverse(d.move, 70, 150) * 0.3 +
+        scaleInverse(d.hyOas, 2.8, 6.5) * 0.3
+      );
     }
 
-    function formatBp(value) {
-      const num = Number(value || 0);
-      const sign = num > 0 ? "+" : "";
-      return sign + num.toFixed(1) + " bp";
+    function dollarFactor() {
+      const d = STRESS_DATA;
+      return Math.round(
+        scaleInverse(d.dxyChange, -0.8, 0.8) * 0.65 +
+        scaleDirect(d.goldChange, -1, 1) * 0.35
+      );
     }
 
-    function formatIndex(value) {
-      return Number(value || 0).toLocaleString("en-US", {
-        maximumFractionDigits: 1
+    function regime(score) {
+      if (score < 20) return "极不利";
+      if (score < 40) return "偏不利";
+      if (score < 60) return "中性震荡";
+      if (score < 80) return "偏有利";
+      return "极有利";
+    }
+
+    function colorFor(score) {
+      if (score < 20) return "#ef4444";
+      if (score < 40) return "#fb923c";
+      if (score < 60) return "#facc15";
+      if (score < 80) return "#22d3ee";
+      return "#22c55e";
+    }
+
+    function paintHeat(id, score) {
+      const el = document.getElementById(id);
+      el.style.setProperty("--h", score + "%");
+      el.style.setProperty("--c", colorFor(score));
+    }
+
+    function renderRisk() {
+      const f1 = fedFactor();
+      const f2 = bondFactor();
+      const f3 = equityFactor();
+      const f4 = stressFactor();
+      const f5 = dollarFactor();
+
+      const total = Math.round(f1 * 0.25 + f2 * 0.25 + f3 * 0.2 + f4 * 0.2 + f5 * 0.1);
+
+      document.getElementById("riskScore").textContent = total;
+      document.getElementById("riskLabel").textContent = regime(total);
+      document.getElementById("riskNeedle").style.transform = `rotate(${-110 + total * 2.2}deg)`;
+
+      document.getElementById("fedFactor").textContent = f1;
+      document.getElementById("bondFactor").textContent = f2;
+      document.getElementById("equityFactor").textContent = f3;
+      document.getElementById("stressFactor").textContent = f4;
+      document.getElementById("dollarFactor").textContent = f5;
+
+      paintHeat("heatFed", f1);
+      paintHeat("heatBond", f2);
+      paintHeat("heatEquity", f3);
+      paintHeat("heatStress", f4);
+      paintHeat("heatDollar", f5);
+
+      document.getElementById("vixValue").textContent = STRESS_DATA.vix.toFixed(1);
+      document.getElementById("moveValue").textContent = STRESS_DATA.move.toFixed(1);
+      document.getElementById("hyValue").textContent = STRESS_DATA.hyOas.toFixed(2) + "%";
+      document.getElementById("dxyValue").textContent = STRESS_DATA.dxy.toFixed(1);
+
+      document.getElementById("vixTag").textContent = STRESS_DATA.vix < 18 ? "低波动" : "高波动";
+      document.getElementById("moveTag").textContent = STRESS_DATA.move < 100 ? "债波可控" : "债波偏高";
+      document.getElementById("hyTag").textContent = STRESS_DATA.hyOas < 4 ? "信用稳定" : "信用承压";
+      document.getElementById("dxyTag").textContent = signedPct(STRESS_DATA.dxyChange);
+      setClass("dxyTag", -STRESS_DATA.dxyChange);
+    }
+
+    function renderFed() {
+      const d = FEDWATCH_DATA;
+      const cutDeg = d.cutProb * 3.6;
+
+      document.getElementById("rateCircle").style.setProperty("--cutDeg", cutDeg + "deg");
+      document.getElementById("cutProb").textContent = pct(d.cutProb);
+      document.getElementById("cutFill").style.width = d.cutProb + "%";
+      document.getElementById("holdFill").style.width = d.holdProb + "%";
+      document.getElementById("hikeFill").style.width = d.hikeProb + "%";
+
+      document.getElementById("cutVal").textContent = pct(d.cutProb);
+      document.getElementById("holdVal").textContent = pct(d.holdProb);
+      document.getElementById("hikeVal").textContent = pct(d.hikeProb);
+
+      document.getElementById("meetingDate").textContent = d.meetingDate;
+      document.getElementById("rateRange").textContent = d.currentRange;
+      document.getElementById("chg1d").textContent = (d.change1d > 0 ? "+" : "") + d.change1d.toFixed(1);
+      document.getElementById("chg1w").textContent = (d.change1w > 0 ? "+" : "") + d.change1w.toFixed(1);
+      document.getElementById("chg1m").textContent = (d.change1m > 0 ? "+" : "") + d.change1m.toFixed(1);
+      document.getElementById("fedPressure").textContent = fedFactor();
+
+      setClass("chg1d", d.change1d);
+      setClass("chg1w", d.change1w);
+      setClass("chg1m", d.change1m);
+    }
+
+    function renderCurve() {
+      const d = TREASURY_DATA;
+      const vals = [d.us2y, d.us10y, d.us30y];
+      const min = Math.min(...vals) - 0.15;
+      const max = Math.max(...vals) + 0.15;
+      const y = v => 210 - ((v - min) / (max - min)) * 170;
+
+      const p2 = { x: 100, y: y(d.us2y) };
+      const p10 = { x: 280, y: y(d.us10y) };
+      const p30 = { x: 460, y: y(d.us30y) };
+
+      document.getElementById("yieldPath").setAttribute("d", `M ${p2.x} ${p2.y} C 180 ${p2.y}, 200 ${p10.y}, ${p10.x} ${p10.y} S 390 ${p30.y}, ${p30.x} ${p30.y}`);
+
+      [["dot2y", p2], ["dot10y", p10], ["dot30y", p30]].forEach(([id, p]) => {
+        document.getElementById(id).setAttribute("cx", p.x);
+        document.getElementById(id).setAttribute("cy", p.y);
       });
+
+      document.getElementById("label2y").textContent = pct(d.us2y, 2);
+      document.getElementById("label10y").textContent = pct(d.us10y, 2);
+      document.getElementById("label30y").textContent = pct(d.us30y, 2);
+
+      document.getElementById("us2y").textContent = pct(d.us2y, 2);
+      document.getElementById("us10y").textContent = pct(d.us10y, 2);
+      document.getElementById("us30y").textContent = pct(d.us30y, 2);
+
+      const spread = (d.us10y - d.us2y) * 100;
+      document.getElementById("spread").textContent = spread.toFixed(0) + "bp";
+      document.getElementById("curveSignal").textContent = spread < 0 ? "倒挂" : spread > 80 ? "陡峭" : "正常";
+      document.getElementById("bondPressure").textContent = bondFactor();
     }
 
-    function formatIndexChange(value) {
-      const num = Number(value || 0);
-      const sign = num > 0 ? "+" : "";
-      return sign + num.toFixed(2) + "%";
+    function renderEquity() {
+      const d = EQUITY_DATA;
+
+      document.getElementById("spxValue").textContent = num(d.spx);
+      document.getElementById("ndxValue").textContent = num(d.ndx);
+      document.getElementById("djiValue").textContent = num(d.dji);
+      document.getElementById("rutValue").textContent = num(d.rut);
+
+      [
+        ["spxChange", d.spxChange],
+        ["ndxChange", d.ndxChange],
+        ["djiChange", d.djiChange],
+        ["rutChange", d.rutChange]
+      ].forEach(([id, v]) => {
+        document.getElementById(id).textContent = signedPct(v);
+        setClass(id, v);
+      });
+
+      const avg = (d.spxChange + d.ndxChange + d.djiChange + d.rutChange) / 4;
+      const growth = d.ndxChange - d.spxChange;
+      const breadth = d.rutChange - d.spxChange;
+
+      document.getElementById("riskAppetite").textContent = avg > 0.5 ? "偏强" : avg < -0.5 ? "偏弱" : "中性";
+      document.getElementById("growthSignal").textContent = growth > 0.35 ? "成长占优" : growth < -0.35 ? "价值占优" : "均衡";
+      document.getElementById("breadthSignal").textContent = breadth > 0.4 ? "扩散" : breadth < -0.4 ? "收窄" : "一般";
+
+      const sb = avg > 0 && TREASURY_DATA.us10yChange < 0
+        ? "股债友好"
+        : avg > 0 && TREASURY_DATA.us10yChange > 6
+        ? "估值拉扯"
+        : avg < 0 && TREASURY_DATA.us10yChange > 0
+        ? "双重压力"
+        : "中性";
+      document.getElementById("stockBond").textContent = sb;
+
+      document.getElementById("dxyMini").textContent = STRESS_DATA.dxy.toFixed(1);
+      document.getElementById("goldMini").textContent = num(STRESS_DATA.gold);
     }
 
-    function setChangeClass(elementId, value) {
-      const el = document.getElementById(elementId);
-      el.textContent = formatChange(value);
-
-      if (value > 0) {
-        el.className = "positive";
-      } else if (value < 0) {
-        el.className = "negative";
-      } else {
-        el.className = "neutral";
-      }
-    }
-
-    function setDirectionalText(elementId, value, unitFormatter) {
-      const el = document.getElementById(elementId);
-      el.textContent = unitFormatter(value);
-
-      if (value > 0) {
-        el.className = "yield-change positive";
-      } else if (value < 0) {
-        el.className = "yield-change negative";
-      } else {
-        el.className = "yield-change neutral";
-      }
-    }
-
-    function setIndexChange(elementId, value) {
-      const el = document.getElementById(elementId);
-      el.textContent = formatIndexChange(value);
-
-      if (value > 0) {
-        el.className = "index-change positive";
-      } else if (value < 0) {
-        el.className = "index-change negative";
-      } else {
-        el.className = "index-change neutral";
-      }
-    }
-
-    function calculatePressureScore(data) {
-      const cut = Number(data.cutProb || 0);
-      const oneWeekChange = Number(data.change1w || 0);
-      const oneMonthChange = Number(data.change1m || 0);
-      const expectedCuts = Number(data.expectedCuts2026 || 0);
-
-      const score =
-        cut * 0.68 +
-        Math.max(oneWeekChange, 0) * 1.35 +
-        Math.max(oneMonthChange, 0) * 0.42 +
-        expectedCuts * 7.5;
-
-      return Math.round(Math.min(100, Math.max(0, score)));
-    }
-
-    function getFedMarketSignal(data, score) {
-      const cut = Number(data.cutProb || 0);
-      const hold = Number(data.holdProb || 0);
-      const hike = Number(data.hikeProb || 0);
-      const weeklyChange = Number(data.change1w || 0);
-
-      if (hike >= 20) {
-        return {
-          signal: "加息尾部风险",
-          conclusion: "加息概率抬升，说明通胀压力或政策鹰派风险重新定价，对美股估值、长久期资产和债券价格偏利空。",
-          macroDirection: "偏鹰",
-          equityImpact: "承压",
-          bondImpact: "收益率上行风险"
-        };
-      }
-
-      if (cut >= 70 && score >= 75) {
-        return {
-          signal: "强降息交易",
-          conclusion: "市场已经明显转向宽松定价，利率下行和权益估值扩张逻辑占优，但预期也更容易被鹰派数据反杀。",
-          macroDirection: "明显转松",
-          equityImpact: "偏利多",
-          bondImpact: "短端下行"
-        };
-      }
-
-      if (cut >= 50) {
-        return {
-          signal: "温和降息交易",
-          conclusion: "降息已经成为阶段性主线，但还不是极端一致预期。对成长股、科技股和长久期资产相对友好。",
-          macroDirection: "边际转松",
-          equityImpact: "偏利多",
-          bondImpact: "曲线可能牛陡"
-        };
-      }
-
-      if (hold >= 60 && weeklyChange < 0) {
-        return {
-          signal: "高利率维持",
-          conclusion: "市场仍以维持利率为主，宽松交易不足。美股上行更多依赖盈利和风险偏好，而非利率端驱动。",
-          macroDirection: "中性偏紧",
-          equityImpact: "中性偏空",
-          bondImpact: "短端粘性"
-        };
-      }
-
-      return {
-        signal: "中性观察",
-        conclusion: "降息与维持利率之间仍未形成压倒性定价，市场更可能跟随 CPI、非农、FOMC 发言和美债收益率波动。",
-        macroDirection: "中性",
-        equityImpact: "震荡",
-        bondImpact: "等待确认"
-      };
-    }
-
-    function getPressureText(score) {
-      if (score >= 80) {
-        return "宽松交易已经非常拥挤，利好风险资产，但对鹰派数据极度敏感。";
-      }
-
-      if (score >= 65) {
-        return "市场已进入较强降息交易区间，权益和债券定价环境偏友好。";
-      }
-
-      if (score >= 45) {
-        return "降息预期处于可交易区间，但还没有形成极端宽松定价。";
-      }
-
-      if (score >= 25) {
-        return "降息压力偏低，市场仍更关注通胀黏性和高利率维持。";
-      }
-
-      return "宽松预期很弱，高利率环境仍是风险资产的重要压制。";
-    }
-
-    function renderFedWatch(data) {
-      const cut = Number(data.cutProb || 0);
-      const hold = Number(data.holdProb || 0);
-      const hike = Number(data.hikeProb || 0);
-
-      const total = cut + hold + hike;
-      const cutWidth = total > 0 ? (cut / total) * 100 : 0;
-      const holdWidth = total > 0 ? (hold / total) * 100 : 0;
-      const hikeWidth = total > 0 ? (hike / total) * 100 : 0;
-
-      const pressureScore = calculatePressureScore(data);
-      const signalData = getFedMarketSignal(data, pressureScore);
-
-      document.getElementById("cutProb").textContent = formatPercent(cut);
-      document.getElementById("meetingDate").textContent = "下次会议：" + data.meetingDate;
-      document.getElementById("currentRange").textContent = "当前利率区间：" + data.currentRange;
-      document.getElementById("updatedAt").textContent = "更新时间：" + data.updatedAt;
-
-      document.getElementById("cutBar").style.width = cutWidth + "%";
-      document.getElementById("holdBar").style.width = holdWidth + "%";
-      document.getElementById("hikeBar").style.width = hikeWidth + "%";
-
-      document.getElementById("cutValue").textContent = formatPercent(cut);
-      document.getElementById("holdValue").textContent = formatPercent(hold);
-      document.getElementById("hikeValue").textContent = formatPercent(hike);
-
-      document.getElementById("expectedRate").textContent = "隐含政策利率：" + data.expectedPolicyRate;
-      document.getElementById("expectedCuts").textContent = "年内隐含降息：" + data.expectedCuts2026 + " 次";
-
-      let policyBias = "中性";
-      if (cut >= 60) policyBias = "转向宽松";
-      if (hold >= 65) policyBias = "维持高利率";
-      if (hike >= 15) policyBias = "鹰派风险";
-
-      document.getElementById("policyBias").textContent = "政策定价：" + policyBias;
-
-      document.getElementById("marketSignal").textContent = signalData.signal;
-      document.getElementById("marketConclusion").textContent = signalData.conclusion;
-
-      document.getElementById("pressureScore").textContent = pressureScore + "/100";
-      document.getElementById("pressureText").textContent = getPressureText(pressureScore);
-
-      setChangeClass("change1d", data.change1d);
-      setChangeClass("change1w", data.change1w);
-      setChangeClass("change1m", data.change1m);
-
-      document.getElementById("macroDirection").textContent = signalData.macroDirection;
-      document.getElementById("equityImpact").textContent = signalData.equityImpact;
-      document.getElementById("bondImpact").textContent = signalData.bondImpact;
-
-      document.getElementById("macroDirectionDesc").textContent =
-        "当前宏观方向由降息概率、周度变化和加息尾部风险共同决定。";
-
-      document.getElementById("equityImpactDesc").textContent =
-        signalData.equityImpact === "偏利多"
-          ? "降息预期抬升对成长股和长久期权益资产估值偏正面。"
-          : signalData.equityImpact === "中性偏空"
-          ? "高利率维持会压制权益估值，市场更依赖盈利增长。"
-          : signalData.equityImpact === "承压"
-          ? "鹰派风险上升会抬高折现率，美股估值短线承压概率更高。"
-          : "美股暂时缺乏明确的利率端方向，需要结合盈利和风险偏好确认。";
-
-      document.getElementById("bondImpactDesc").textContent =
-        signalData.bondImpact === "短端下行"
-          ? "强降息交易通常会压低短端收益率，并推动曲线牛陡。"
-          : signalData.bondImpact === "曲线可能牛陡"
-          ? "温和降息预期一般利好短端债券，长端表现取决于期限溢价。"
-          : signalData.bondImpact === "短端粘性"
-          ? "高利率维持会让短端收益率更有粘性，债券价格弹性受限。"
-          : "债市方向仍需等待通胀、就业和 FOMC 信号确认。";
-    }
-
-    function renderTreasuryModule(data) {
-      const us2y = Number(data.us2y || 0);
-      const us10y = Number(data.us10y || 0);
-      const us30y = Number(data.us30y || 0);
-
-      const spread10y2y = (us10y - us2y) * 100;
-
-      document.getElementById("us2y").textContent = formatYield(us2y);
-      document.getElementById("us10y").textContent = formatYield(us10y);
-      document.getElementById("us30y").textContent = formatYield(us30y);
-
-      setDirectionalText("us2yChange", data.us2yChange, formatBp);
-      setDirectionalText("us10yChange", data.us10yChange, formatBp);
-      setDirectionalText("us30yChange", data.us30yChange, formatBp);
-
-      document.getElementById("spread10y2y").textContent = spread10y2y.toFixed(0) + " bp";
-
-      const minYield = Math.min(us2y, us10y, us30y);
-      const maxYield = Math.max(us2y, us10y, us30y);
-      const range = Math.max(maxYield - minYield, 0.01);
-
-      const dot2yTop = 64 - ((us2y - minYield) / range) * 48;
-      const dot10yTop = 64 - ((us10y - minYield) / range) * 48;
-      const dot30yTop = 64 - ((us30y - minYield) / range) * 48;
-
-      document.getElementById("curveDot2y").style.top = dot2yTop + "px";
-      document.getElementById("curveDot10y").style.top = dot10yTop + "px";
-      document.getElementById("curveDot30y").style.top = dot30yTop + "px";
-
-      let curveSignal = "正常曲线";
-      let curveConclusion = "10Y - 2Y 利差为正，说明市场对长期增长和通胀仍有一定期限溢价，衰退定价不算极端。";
-      let bondMacroSignal = "增长尚可";
-      let bondMacroText = "曲线正斜率通常代表市场没有极端押注衰退，但仍需结合前端利率是否快速下行判断降息交易。";
-      let bondRiskSignal = "中性";
-      let bondRiskText = "长端利率没有明显上冲时，对股票估值压力相对可控。";
-
-      if (spread10y2y < 0) {
-        curveSignal = "倒挂";
-        curveConclusion = "10Y - 2Y 利差为负，收益率曲线倒挂，代表市场对未来降息或经济放缓存在较强定价。";
-        bondMacroSignal = "衰退定价";
-        bondMacroText = "曲线倒挂通常意味着短端政策利率偏高，市场预期未来增长和通胀下行。";
-        bondRiskSignal = "谨慎";
-        bondRiskText = "倒挂本身不必然利空股票，但若伴随信用利差走阔，风险资产压力会明显上升。";
-      }
-
-      if (spread10y2y > 80) {
-        curveSignal = "陡峭化";
-        curveConclusion = "10Y - 2Y 利差明显走阔，曲线陡峭化，可能来自降息预期、期限溢价上升或财政供给压力。";
-        bondMacroSignal = "再通胀/宽松";
-        bondMacroText = "如果短端下行快于长端，通常代表降息交易；如果长端上行更快，则可能是期限溢价和财政风险。";
-        bondRiskSignal = "分化";
-        bondRiskText = "牛陡对股票偏友好，熊陡则会压制估值，需要观察 10Y 是上行还是下行。";
-      }
-
-      if (data.us10yChange > 8) {
-        bondRiskSignal = "估值承压";
-        bondRiskText = "10Y 美债快速上行会抬高折现率，对成长股和高估值资产形成压力。";
-      }
-
-      document.getElementById("curveSignal").textContent = curveSignal;
-      document.getElementById("curveConclusion").textContent = curveConclusion;
-      document.getElementById("bondMacroSignal").textContent = bondMacroSignal;
-      document.getElementById("bondMacroText").textContent = bondMacroText;
-      document.getElementById("bondRiskSignal").textContent = bondRiskSignal;
-      document.getElementById("bondRiskText").textContent = bondRiskText;
-    }
-
-    function renderEquityModule(data, treasuryData) {
-      document.getElementById("spxValue").textContent = formatIndex(data.spx);
-      document.getElementById("ndxValue").textContent = formatIndex(data.ndx);
-      document.getElementById("djiValue").textContent = formatIndex(data.dji);
-      document.getElementById("rutValue").textContent = formatIndex(data.rut);
-
-      setIndexChange("spxChange", data.spxChange);
-      setIndexChange("ndxChange", data.ndxChange);
-      setIndexChange("djiChange", data.djiChange);
-      setIndexChange("rutChange", data.rutChange);
-
-      const avgChange =
-        (Number(data.spxChange || 0) +
-          Number(data.ndxChange || 0) +
-          Number(data.djiChange || 0) +
-          Number(data.rutChange || 0)) / 4;
-
-      const growthSpread = Number(data.ndxChange || 0) - Number(data.spxChange || 0);
-      const breadthSpread = Number(data.rutChange || 0) - Number(data.spxChange || 0);
-      const us10yChange = Number(treasuryData.us10yChange || 0);
-
-      let riskAppetite = "中性";
-      let riskDesc = "主要指数涨跌分化，市场风险偏好没有形成明确方向。";
-
-      if (avgChange > 0.5) {
-        riskAppetite = "偏强";
-        riskDesc = "主要指数整体上涨，说明股票市场风险偏好较强。";
-      } else if (avgChange < -0.5) {
-        riskAppetite = "偏弱";
-        riskDesc = "主要指数整体下跌，说明股票市场风险偏好偏弱。";
-      }
-
-      let growthStrength = "均衡";
-      let growthDesc = "纳指相对标普没有明显超额收益，成长股与大盘风格较均衡。";
-
-      if (growthSpread > 0.35) {
-        growthStrength = "成长占优";
-        growthDesc = "纳指明显强于标普，说明科技成长股风险偏好更强，市场更偏长久期资产。";
-      } else if (growthSpread < -0.35) {
-        growthStrength = "价值占优";
-        growthDesc = "纳指弱于标普，说明成长股承压，市场可能更偏价值、防御或现金流资产。";
-      }
-
-      let marketBreadth = "一般";
-      let breadthDesc = "罗素 2000 相对标普没有明显优势，行情扩散程度一般。";
-
-      if (breadthSpread > 0.4) {
-        marketBreadth = "扩散";
-        breadthDesc = "小盘股强于大盘，说明行情从龙头向更广泛股票扩散，风险偏好改善。";
-      } else if (breadthSpread < -0.4) {
-        marketBreadth = "收窄";
-        breadthDesc = "小盘股弱于大盘，说明行情集中在龙头，市场广度不足。";
-      }
-
-      let stockBondSignal = "中性";
-      let stockBondDesc = "股债之间暂时没有明显冲突，等待利率和权益方向进一步确认。";
-
-      if (avgChange > 0 && us10yChange < 0) {
-        stockBondSignal = "股债友好";
-        stockBondDesc = "美股上涨同时 10Y 下行，属于典型估值友好组合。";
-      } else if (avgChange > 0 && us10yChange > 6) {
-        stockBondSignal = "估值拉扯";
-        stockBondDesc = "美股上涨但 10Y 也明显上行，短期风险偏好强，但估值压力正在累积。";
-      } else if (avgChange < 0 && us10yChange > 0) {
-        stockBondSignal = "双重压力";
-        stockBondDesc = "美股下跌且 10Y 上行，股票同时承受风险偏好与折现率压力。";
-      }
-
-      document.getElementById("equityRiskAppetite").textContent = riskAppetite;
-      document.getElementById("equityRiskDesc").textContent = riskDesc;
-
-      document.getElementById("growthStrength").textContent = growthStrength;
-      document.getElementById("growthStrengthDesc").textContent = growthDesc;
-
-      document.getElementById("marketBreadth").textContent = marketBreadth;
-      document.getElementById("marketBreadthDesc").textContent = breadthDesc;
-
-      document.getElementById("stockBondSignal").textContent = stockBondSignal;
-      document.getElementById("stockBondDesc").textContent = stockBondDesc;
-    }
-
-    updateClock();
-    setInterval(updateClock, 1000);
-
-    renderFedWatch(FEDWATCH_DATA);
-    renderTreasuryModule(TREASURY_DATA);
-    renderEquityModule(EQUITY_DATA, TREASURY_DATA);
+    clock();
+    setInterval(clock, 1000);
+    renderRisk();
+    renderFed();
+    renderCurve();
+    renderEquity();
   </script>
 </body>
 </html>
