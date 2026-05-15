@@ -313,6 +313,55 @@
       white-space: nowrap;
     }
 
+    .module-note {
+      margin-top: 14px;
+      border-radius: 18px;
+      padding: 12px 14px;
+      background:
+        linear-gradient(90deg, rgba(34, 211, 238, 0.08), rgba(167, 139, 250, 0.05)),
+        rgba(2, 6, 23, 0.36);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.65;
+      position: relative;
+      z-index: 2;
+    }
+
+    .module-note b {
+      color: var(--sub);
+      font-weight: 900;
+    }
+
+    .module-note .note-title {
+      color: var(--cyan);
+      font-weight: 950;
+      margin-right: 6px;
+    }
+
+    .note-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .note-chip {
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(2, 6, 23, 0.34);
+      border: 1px solid rgba(148, 163, 184, 0.10);
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .note-chip b {
+      color: var(--text);
+    }
+
     .panel,
     .tile,
     .mini,
@@ -323,7 +372,8 @@
     .pulse-item,
     .sector-cell,
     .stock-chip,
-    .bar-card {
+    .bar-card,
+    .note-chip {
       transition:
         transform 0.22s ease,
         border-color 0.22s ease,
@@ -341,7 +391,8 @@
     .pulse-item:hover,
     .sector-cell:hover,
     .stock-chip:hover,
-    .bar-card:hover {
+    .bar-card:hover,
+    .note-chip:hover {
       transform: translateY(-3px);
       border-color: rgba(34, 211, 238, 0.38);
       box-shadow:
@@ -983,8 +1034,6 @@
       font-size: clamp(15px, 1.25vw, 20px);
     }
 
-    /* Hot Stocks / Sectors */
-
     .leadership-grid {
       display: grid;
       grid-template-columns: 0.95fr 1.35fr 1fr;
@@ -1088,7 +1137,6 @@
       transition: width 1.1s cubic-bezier(.16,1,.3,1);
     }
 
-    /* 板块热力图：压缩版，避免文字溢出 */
     .sector-map {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1341,6 +1389,12 @@
       }
     }
 
+    @media (max-width: 720px) {
+      .note-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 640px) {
       .page {
         width: min(100% - 20px, 1380px);
@@ -1559,6 +1613,12 @@
           </div>
         </div>
       </div>
+
+      <div class="module-note">
+        <span class="note-title">指标解释：</span>
+        <b>风险资产宏观友好度</b>综合 FED 宽松预期、美债收益率压力、美股动能、波动率/信用压力、美元与避险资产状态计算。
+        分数越高，代表宏观环境越偏向 Risk-On；分数越低，代表高利率、强美元、波动率或信用压力对风险资产压制更强。
+      </div>
     </section>
 
     <div class="section-grid">
@@ -1657,6 +1717,13 @@
             </div>
           </div>
         </div>
+
+        <div class="module-note">
+          <span class="note-title">指标解释：</span>
+          <b>降息概率</b>反映市场对下一次 FOMC 政策路径的定价。
+          降息概率上升通常利好长久期资产、科技成长股和债券价格；但如果降息来自衰退担忧，则需要结合信用利差、VIX 和股市广度判断。
+          票委鹰鸽结构为看板评级口径，后续可根据官员讲话动态调整。
+        </div>
       </section>
 
       <section class="module">
@@ -1702,6 +1769,13 @@
           <div class="mini"><span>曲线</span><b id="curveSignal">--</b></div>
           <div class="mini"><span>估值压力</span><b id="bondPressure">--</b></div>
         </div>
+
+        <div class="module-note">
+          <span class="note-title">指标解释：</span>
+          <b>收益率曲线</b>用于观察市场对增长、通胀和降息路径的预期。
+          10Y-2Y 利差为正代表曲线正常或陡峭；倒挂通常意味着短端政策利率偏高、市场预期未来增长放缓或降息。
+          对风险资产而言，10Y 快速上行通常压制估值，10Y 下行但信用稳定则更偏利好。
+        </div>
       </section>
     </div>
 
@@ -1744,6 +1818,13 @@
         <div class="mini"><span>股债组合</span><b id="stockBond">--</b></div>
         <div class="mini"><span>DXY</span><b id="dxyMini">--</b></div>
         <div class="mini"><span>Gold</span><b id="goldMini">--</b></div>
+      </div>
+
+      <div class="module-note">
+        <span class="note-title">指标解释：</span>
+        <b>美股指数热力图</b>用于判断市场风险偏好和行情质量。
+        Nasdaq 100 强于 S&P 500，通常代表成长股占优；Russell 2000 强于大盘，说明行情从龙头扩散到小盘，市场广度改善。
+        如果指数上涨但小盘和广度较弱，说明行情可能仍集中在少数龙头。
       </div>
     </section>
 
@@ -1807,6 +1888,28 @@
 
         <div class="panel sector-map" id="sectorMap"></div>
       </div>
+
+      <div class="module-note">
+        <span class="note-title">指标解释：</span>
+        <b>美股主线强度</b>衡量权益市场内部是否形成清晰 Risk-On 主线。
+        计算包括 AI/半导体动能、七巨头上涨广度、板块上涨比例、小盘扩散，以及防御板块是否落后。
+        RS 表示相对强弱，当前口径为：<b>板块涨跌幅 - S&P 500 涨跌幅</b>；RS 为正说明跑赢大盘，RS 为负说明跑输大盘。
+      </div>
+
+      <div class="note-grid">
+        <div class="note-chip">
+          <b>AI / Semis Momentum：</b>衡量 AI 与半导体股票池的平均涨跌强度，是当前美股成长主线的核心代理。
+        </div>
+        <div class="note-chip">
+          <b>Magnificent 7 Breadth：</b>衡量七巨头中上涨股票占比，用于判断指数是否仍由龙头驱动。
+        </div>
+        <div class="note-chip">
+          <b>Sector Breadth：</b>衡量主要 ETF 板块上涨比例，代表行情扩散程度。
+        </div>
+        <div class="note-chip">
+          <b>Defensive Lag：</b>成长板块强于公用事业、必需消费、医疗等防御板块时，通常代表风险偏好更强。
+        </div>
+      </div>
     </section>
 
     <section class="module">
@@ -1825,6 +1928,13 @@
           <div class="module-title" style="margin-bottom: 12px;"><span class="dot"></span> MAGNIFICENT 7 ENERGY</div>
           <div class="mag7-bars" id="mag7Bars"></div>
         </div>
+      </div>
+
+      <div class="module-note">
+        <span class="note-title">指标解释：</span>
+        <b>AI / 半导体热力图</b>用于观察美股最重要成长主线的强弱。
+        如果 NVDA、AVGO、SMH、SOXX 同时走强，说明 AI 主线有扩散；如果只有单一龙头上涨而 ETF 或其他芯片股不跟，则更像龙头孤涨。
+        VOL HEAT 是成交量热度代理，当前用成交量对数标准化得到，用于观察是否存在放量异动。
       </div>
     </section>
   </main>
@@ -2310,21 +2420,6 @@
       container.innerHTML = "";
 
       MARKET.SECTORS.forEach(item => {
-        /*
-          板块热力图计算逻辑：
-          1. change = 当日涨跌幅，来自 Stooq CSV；若 API 拉取失败，则使用本地 fallback 数据。
-          2. rs = 相对强弱，当前口径是：该板块涨跌幅 - S&P 500 涨跌幅。
-             例：SMH +1.27%，SPX +0.42%，则 RS = +0.85。
-          3. 色彩：
-             绿色 = 明显强势；
-             青色 = 温和强势；
-             黄色 = 中性；
-             橙红 = 弱势。
-          4. 背景填充高度 sectorH：
-             用 change 在 [-1.5%, +1.8%] 区间内做 0-100 标准化。
-             涨得越多，底部发光面积越高。
-        */
-
         const strength = clamp(scaleDirect(item.change, -1.5, 1.8));
         const color = colorForChange(item.change);
 
@@ -2444,12 +2539,6 @@
           }
         }
 
-        /*
-          RS 计算逻辑：
-          每个板块 RS = 板块当日涨跌幅 - S&P 500 当日涨跌幅。
-          RS > 0：跑赢大盘；
-          RS < 0：跑输大盘。
-        */
         const spxBase = Number(EQUITY_DATA.spxChange || 0);
         MARKET.SECTORS.forEach(item => {
           item.rs = Number(item.change || 0) - spxBase;
