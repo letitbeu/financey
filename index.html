@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Financey 宏观金融看板</title>
 
   <style>
@@ -521,6 +522,154 @@
       box-shadow: 0 0 18px currentColor;
     }
 
+    .fomc-mini-panel {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(34, 211, 238, 0.12), transparent 35%),
+        rgba(2, 6, 23, 0.48);
+      border-radius: 24px;
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .fomc-mini-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1.2fr;
+      gap: 14px;
+    }
+
+    .fomc-date-card,
+    .fomc-vote-card {
+      border-radius: 20px;
+      padding: 16px;
+      background: rgba(15, 23, 42, 0.58);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      min-width: 0;
+    }
+
+    .fomc-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .fomc-big-date {
+      font-size: 34px;
+      line-height: 0.95;
+      font-weight: 950;
+      letter-spacing: -0.06em;
+      color: var(--text);
+    }
+
+    .fomc-time-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .fomc-time-box {
+      border-radius: 16px;
+      background: rgba(2, 6, 23, 0.44);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      padding: 12px;
+      min-width: 0;
+    }
+
+    .fomc-time-box span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 6px;
+      white-space: nowrap;
+    }
+
+    .fomc-time-box b {
+      display: block;
+      font-size: 18px;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .vote-meter {
+      height: 22px;
+      display: flex;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.14);
+      margin: 14px 0 12px;
+    }
+
+    .vote-seg {
+      height: 100%;
+      transition: width 0.45s ease;
+    }
+
+    .vote-hawk {
+      background: linear-gradient(90deg, #fb923c, #ef4444);
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.45);
+    }
+
+    .vote-neutral {
+      background: linear-gradient(90deg, #64748b, #94a3b8);
+    }
+
+    .vote-dove {
+      background: linear-gradient(90deg, #38bdf8, #22c55e);
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.45);
+    }
+
+    .vote-legend {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .vote-chip {
+      border-radius: 16px;
+      background: rgba(2, 6, 23, 0.42);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      padding: 10px;
+      min-width: 0;
+    }
+
+    .vote-chip span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 5px;
+      white-space: nowrap;
+    }
+
+    .vote-chip b {
+      display: block;
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+    }
+
+    .vote-bias {
+      margin-top: 12px;
+      display: inline-flex;
+      max-width: 100%;
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: rgba(34, 211, 238, 0.10);
+      border: 1px solid rgba(34, 211, 238, 0.20);
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .curve-box {
       height: 310px;
       padding: 12px;
@@ -597,7 +746,8 @@
     @media (max-width: 1100px) {
       .hero-grid,
       .section-grid,
-      .fed-layout {
+      .fed-layout,
+      .fomc-mini-grid {
         grid-template-columns: 1fr;
       }
 
@@ -645,7 +795,9 @@
 
       .terminal-grid,
       .matrix,
-      .bottom-strip {
+      .bottom-strip,
+      .fomc-time-row,
+      .vote-legend {
         grid-template-columns: 1fr;
       }
 
@@ -685,6 +837,10 @@
       .rate-inside b {
         font-size: 46px;
       }
+
+      .fomc-big-date {
+        font-size: 30px;
+      }
     }
   </style>
 </head>
@@ -696,6 +852,7 @@
         <div class="eyebrow">GLOBAL MACRO RISK TERMINAL</div>
         <h1>Financey 宏观金融看板</h1>
       </div>
+
       <div class="clock">
         北京时间
         <b id="beijingNow">--</b>
@@ -717,6 +874,7 @@
               <div class="big-label" id="riskLabel">--</div>
             </div>
           </div>
+
           <div class="scale">
             <span>RISK-OFF</span>
             <span>NEUTRAL</span>
@@ -731,21 +889,25 @@
               <div class="heat-score" id="fedFactor">--</div>
               <div class="heat-sub">政策</div>
             </div>
+
             <div class="heat" id="heatBond">
               <div class="heat-name">美债<br>压力</div>
               <div class="heat-score" id="bondFactor">--</div>
               <div class="heat-sub">利率</div>
             </div>
+
             <div class="heat" id="heatEquity">
               <div class="heat-name">美股<br>动能</div>
               <div class="heat-score" id="equityFactor">--</div>
               <div class="heat-sub">权益</div>
             </div>
+
             <div class="heat" id="heatStress">
               <div class="heat-name">波动<br>信用</div>
               <div class="heat-score" id="stressFactor">--</div>
               <div class="heat-sub">压力</div>
             </div>
+
             <div class="heat" id="heatDollar">
               <div class="heat-name">美元<br>避险</div>
               <div class="heat-score" id="dollarFactor">--</div>
@@ -761,16 +923,19 @@
               <b id="vixValue">--</b>
               <em id="vixTag">--</em>
             </div>
+
             <div class="metric">
               <span>MOVE</span>
               <b id="moveValue">--</b>
               <em id="moveTag">--</em>
             </div>
+
             <div class="metric">
               <span>HY OAS</span>
               <b id="hyValue">--</b>
               <em id="hyTag">--</em>
             </div>
+
             <div class="metric">
               <span>DXY</span>
               <b id="dxyValue">--</b>
@@ -804,11 +969,13 @@
               <div class="track"><div class="fill" id="cutFill"></div></div>
               <b id="cutVal">--</b>
             </div>
+
             <div class="prob">
               <span>维持</span>
               <div class="track"><div class="fill" id="holdFill" style="background:#64748b"></div></div>
               <b id="holdVal">--</b>
             </div>
+
             <div class="prob">
               <span>加息</span>
               <div class="track"><div class="fill" id="hikeFill" style="background:#fb923c"></div></div>
@@ -822,6 +989,56 @@
               <div class="mini"><span>1W</span><b id="chg1w">--</b></div>
               <div class="mini"><span>1M</span><b id="chg1m">--</b></div>
               <div class="mini"><span>压力</span><b id="fedPressure">--</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fomc-mini-panel">
+          <div class="fomc-mini-grid">
+            <div class="fomc-date-card">
+              <div class="fomc-label">NEXT FOMC</div>
+              <div class="fomc-big-date" id="nextFomcDate">--</div>
+
+              <div class="fomc-time-row">
+                <div class="fomc-time-box">
+                  <span>决议时间</span>
+                  <b id="fomcDecisionTime">--</b>
+                </div>
+
+                <div class="fomc-time-box">
+                  <span>记者会</span>
+                  <b id="fomcPressTime">--</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="fomc-vote-card">
+              <div class="fomc-label">FOMC VOTERS · HAWK / DOVE</div>
+
+              <div class="vote-meter">
+                <div class="vote-seg vote-hawk" id="hawkSeg"></div>
+                <div class="vote-seg vote-neutral" id="neutralSeg"></div>
+                <div class="vote-seg vote-dove" id="doveSeg"></div>
+              </div>
+
+              <div class="vote-legend">
+                <div class="vote-chip">
+                  <span>鹰派</span>
+                  <b id="hawkVotes">--</b>
+                </div>
+
+                <div class="vote-chip">
+                  <span>中性</span>
+                  <b id="neutralVotes">--</b>
+                </div>
+
+                <div class="vote-chip">
+                  <span>鸽派</span>
+                  <b id="doveVotes">--</b>
+                </div>
+              </div>
+
+              <div class="vote-bias" id="fomcBias">--</div>
             </div>
           </div>
         </div>
@@ -847,6 +1064,7 @@
             <line x1="55" y1="35" x2="55" y2="210" stroke="rgba(148,163,184,0.18)" />
 
             <path id="yieldPath" class="curve-line-svg" d="" />
+
             <circle id="dot2y" class="curve-dot-svg" r="7" />
             <circle id="dot10y" class="curve-dot-svg" r="7" />
             <circle id="dot30y" class="curve-dot-svg" r="7" />
@@ -884,16 +1102,19 @@
           <div class="tile-value" id="spxValue">--</div>
           <div class="tile-change" id="spxChange">--</div>
         </div>
+
         <div class="tile" style="--glow: rgba(34,211,238,0.85)">
           <div class="tile-name">NASDAQ 100</div>
           <div class="tile-value" id="ndxValue">--</div>
           <div class="tile-change" id="ndxChange">--</div>
         </div>
+
         <div class="tile" style="--glow: rgba(167,139,250,0.85)">
           <div class="tile-name">DOW JONES</div>
           <div class="tile-value" id="djiValue">--</div>
           <div class="tile-change" id="djiChange">--</div>
         </div>
+
         <div class="tile" style="--glow: rgba(250,204,21,0.85)">
           <div class="tile-name">RUSSELL 2000</div>
           <div class="tile-value" id="rutValue">--</div>
@@ -924,6 +1145,16 @@
       change1w: 8.4,
       change1m: 15.7,
       expectedCuts2026: 1.2
+    };
+
+    const FOMC_DATA = {
+      nextMeeting: "06/16-06/17",
+      decisionBeijing: "06/18 02:00",
+      pressBeijing: "06/18 02:30",
+
+      hawkishVotes: 4,
+      neutralVotes: 3,
+      dovishVotes: 4
     };
 
     const TREASURY_DATA = {
@@ -1002,7 +1233,12 @@
 
     function fedFactor() {
       const d = FEDWATCH_DATA;
-      return Math.round(clamp(d.cutProb * 0.65 + Math.max(d.change1w, 0) * 1.25 + d.expectedCuts2026 * 8 - d.hikeProb * 1.2));
+      return Math.round(clamp(
+        d.cutProb * 0.65 +
+        Math.max(d.change1w, 0) * 1.25 +
+        d.expectedCuts2026 * 8 -
+        d.hikeProb * 1.2
+      ));
     }
 
     function bondFactor() {
@@ -1011,6 +1247,7 @@
       const level = scaleInverse(d.us10y, 3.2, 5.2);
       const change = scaleInverse(d.us10yChange, -12, 12);
       const curve = spread < -60 ? 25 : spread < 0 ? 45 : spread < 120 ? 70 : 55;
+
       return Math.round(level * 0.45 + change * 0.35 + curve * 0.2);
     }
 
@@ -1029,6 +1266,7 @@
 
     function stressFactor() {
       const d = STRESS_DATA;
+
       return Math.round(
         scaleInverse(d.vix, 12, 32) * 0.4 +
         scaleInverse(d.move, 70, 150) * 0.3 +
@@ -1038,6 +1276,7 @@
 
     function dollarFactor() {
       const d = STRESS_DATA;
+
       return Math.round(
         scaleInverse(d.dxyChange, -0.8, 0.8) * 0.65 +
         scaleDirect(d.goldChange, -1, 1) * 0.35
@@ -1108,6 +1347,7 @@
       const cutDeg = d.cutProb * 3.6;
 
       document.getElementById("rateCircle").style.setProperty("--cutDeg", cutDeg + "deg");
+
       document.getElementById("cutProb").textContent = pct(d.cutProb);
       document.getElementById("cutFill").style.width = d.cutProb + "%";
       document.getElementById("holdFill").style.width = d.holdProb + "%";
@@ -1119,6 +1359,7 @@
 
       document.getElementById("meetingDate").textContent = d.meetingDate;
       document.getElementById("rateRange").textContent = d.currentRange;
+
       document.getElementById("chg1d").textContent = (d.change1d > 0 ? "+" : "") + d.change1d.toFixed(1);
       document.getElementById("chg1w").textContent = (d.change1w > 0 ? "+" : "") + d.change1w.toFixed(1);
       document.getElementById("chg1m").textContent = (d.change1m > 0 ? "+" : "") + d.change1m.toFixed(1);
@@ -1127,6 +1368,34 @@
       setClass("chg1d", d.change1d);
       setClass("chg1w", d.change1w);
       setClass("chg1m", d.change1m);
+    }
+
+    function renderFomcPanel() {
+      const d = FOMC_DATA;
+      const total = d.hawkishVotes + d.neutralVotes + d.dovishVotes;
+
+      const hawkPct = total > 0 ? (d.hawkishVotes / total) * 100 : 0;
+      const neutralPct = total > 0 ? (d.neutralVotes / total) * 100 : 0;
+      const dovePct = total > 0 ? (d.dovishVotes / total) * 100 : 0;
+
+      document.getElementById("nextFomcDate").textContent = d.nextMeeting;
+      document.getElementById("fomcDecisionTime").textContent = d.decisionBeijing;
+      document.getElementById("fomcPressTime").textContent = d.pressBeijing;
+
+      document.getElementById("hawkVotes").textContent = d.hawkishVotes;
+      document.getElementById("neutralVotes").textContent = d.neutralVotes;
+      document.getElementById("doveVotes").textContent = d.dovishVotes;
+
+      document.getElementById("hawkSeg").style.width = hawkPct + "%";
+      document.getElementById("neutralSeg").style.width = neutralPct + "%";
+      document.getElementById("doveSeg").style.width = dovePct + "%";
+
+      let bias = "鹰鸽均衡";
+      if (d.hawkishVotes >= d.dovishVotes + 2) bias = "票委结构偏鹰";
+      if (d.dovishVotes >= d.hawkishVotes + 2) bias = "票委结构偏鸽";
+
+      document.getElementById("fomcBias").textContent =
+        bias + " · " + d.hawkishVotes + "鹰 / " + d.neutralVotes + "中性 / " + d.dovishVotes + "鸽";
     }
 
     function renderCurve() {
@@ -1159,6 +1428,7 @@
       document.getElementById("us30y").textContent = pct(d.us30y, 2);
 
       const spread = (d.us10y - d.us2y) * 100;
+
       document.getElementById("spread").textContent = spread.toFixed(0) + "bp";
       document.getElementById("curveSignal").textContent = spread < 0 ? "倒挂" : spread > 80 ? "陡峭" : "正常";
       document.getElementById("bondPressure").textContent = bondFactor();
@@ -1186,9 +1456,14 @@
       const growth = d.ndxChange - d.spxChange;
       const breadth = d.rutChange - d.spxChange;
 
-      document.getElementById("riskAppetite").textContent = avg > 0.5 ? "偏强" : avg < -0.5 ? "偏弱" : "中性";
-      document.getElementById("growthSignal").textContent = growth > 0.35 ? "成长占优" : growth < -0.35 ? "价值占优" : "均衡";
-      document.getElementById("breadthSignal").textContent = breadth > 0.4 ? "扩散" : breadth < -0.4 ? "收窄" : "一般";
+      document.getElementById("riskAppetite").textContent =
+        avg > 0.5 ? "偏强" : avg < -0.5 ? "偏弱" : "中性";
+
+      document.getElementById("growthSignal").textContent =
+        growth > 0.35 ? "成长占优" : growth < -0.35 ? "价值占优" : "均衡";
+
+      document.getElementById("breadthSignal").textContent =
+        breadth > 0.4 ? "扩散" : breadth < -0.4 ? "收窄" : "一般";
 
       const sb = avg > 0 && TREASURY_DATA.us10yChange < 0
         ? "股债友好"
@@ -1209,6 +1484,7 @@
 
     renderRisk();
     renderFed();
+    renderFomcPanel();
     renderCurve();
     renderEquity();
   </script>
