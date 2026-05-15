@@ -1,1 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>多师傅的 BTC 投研看板</title>
+
+  <style>
+    :root {
+      --bg-main: #070b13;
+      --bg-card: rgba(15, 23, 42, 0.78);
+      --bg-card-soft: rgba(15, 23, 42, 0.52);
+      --border-soft: rgba(148, 163, 184, 0.16);
+      --text-main: #f8fafc;
+      --text-sub: #cbd5e1;
+      --text-muted: #94a3b8;
+      --blue: #38bdf8;
+      --green: #22c55e;
+      --orange: #f97316;
+      --red: #ef4444;
+      --yellow: #facc15;
+      --purple: #a78bfa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC",
+        "Microsoft YaHei", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(56, 189, 248, 0.12), transparent 28%),
+        radial-gradient(circle at 80% 10%, rgba(167, 139, 250, 0.10), transparent 28%),
+        linear-gradient(180deg, #050816 0%, #070b13 45%, #060914 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 20px 48px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .brand-kicker {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.15;
+      font-weight: 800;
+    }
+
+    .brand-subtitle {
+      margin-top: 10px;
+      color: var(--text-sub);
+      font-size: 14px;
+      line-height: 1.7;
+      max-width: 760px;
+    }
+
+    .top-status {
+      min-width: 220px;
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.62);
+      border-radius: 18px;
+      padding: 14px 16px;
+      text-align: right;
+    }
+
+    .top-status-label {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .top-status-value {
+      font-size: 14px;
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    .module {
+      margin: 22px 0;
+      padding: 22px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(20, 28, 45, 0.92), rgba(13, 18, 30, 0.96));
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
+    }
+
+    .module-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .module-kicker {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .module-title {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+
+    .module-desc {
+      color: var(--text-sub);
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .module-source {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .source-pill {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 8px 11px;
+      font-size: 12px;
+      color: #bfdbfe;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(147, 197, 253, 0.18);
+    }
+
+    .fed-grid {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr 1fr 1fr;
+      gap: 14px;
+    }
+
+    .card {
+      border-radius: 19px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      padding: 16px;
+      min-height: 146px;
+    }
+
+    .main-card {
+      min-height: 252px;
+    }
+
+    .card-title {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .prob-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .big-prob {
+      font-size: 52px;
+      line-height: 0.95;
+      font-weight: 900;
+      color: #e0f2fe;
+      letter-spacing: -0.04em;
+    }
+
+    .prob-meta {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.85;
+      padding-bottom: 1px;
+    }
+
+    .mini-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mini-tag {
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 12px;
+      color: #dbeafe;
+      background: rgba(59, 130, 246, 0.11);
+      border: 1px solid rgba(147, 197, 253, 0.14);
+    }
+
+    .bar-section {
+      margin-top: 8px;
+    }
+
+    .bar-labels,
+    .bar-values {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 7px;
+    }
+
+    .bar-values {
+      margin-top: 7px;
+      margin-bottom: 0;
+      color: var(--text-main);
+      font-weight: 800;
+    }
+
+    .bars {
+      display: flex;
+      height: 13px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(148, 163, 184, 0.15);
+    }
+
+    .bar {
+      height: 100%;
+      transition: width 0.45s ease;
+    }
+
+    .bar-cut {
+      background: var(--blue);
+    }
+
+    .bar-hold {
+      background: #64748b;
+    }
+
+    .bar-hike {
+      background: var(--orange);
+    }
+
+    .signal {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      background: rgba(56, 189, 248, 0.12);
+      color: #7dd3fc;
+      border: 1px solid rgba(125, 211, 252, 0.18);
+    }
+
+    .card-text {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.68;
+    }
+
+    .score {
+      font-size: 38px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+
+    .score-sub {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .change-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .change-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      color: var(--text-sub);
+      font-size: 13px;
+      padding-bottom: 9px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.10);
+    }
+
+    .change-item:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .change-item b {
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .positive {
+      color: var(--green) !important;
+    }
+
+    .negative {
+      color: var(--red) !important;
+    }
+
+    .neutral {
+      color: var(--text-main) !important;
+    }
+
+    .indicator-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .indicator-card {
+      border-radius: 18px;
+      background: var(--bg-card-soft);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      padding: 14px;
+    }
+
+    .indicator-name {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .indicator-value {
+      font-size: 22px;
+      font-weight: 850;
+      margin-bottom: 8px;
+    }
+
+    .indicator-desc {
+      color: var(--text-sub);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .note {
+      margin-top: 16px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: rgba(2, 6, 23, 0.34);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .placeholder-module {
+      margin-top: 18px;
+      border-radius: 22px;
+      border: 1px dashed rgba(148, 163, 184, 0.24);
+      background: rgba(15, 23, 42, 0.34);
+      padding: 24px;
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 1080px) {
+      .fed-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .indicator-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .main-card {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 22px 14px 38px;
+      }
+
+      .topbar {
+        flex-direction: column;
+      }
+
+      .top-status {
+        width: 100%;
+        text-align: left;
+      }
+
+      .module {
+        padding: 17px;
+      }
+
+      .module-header {
+        flex-direction: column;
+      }
+
+      .module-source {
+        justify-content: flex-start;
+      }
+
+      .fed-grid,
+      .indicator-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .main-card {
+        grid-column: span 1;
+      }
+
+      .prob-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .big-prob {
+        font-size: 48px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div>
+        <div class="brand-kicker">BTC MACRO DASHBOARD</div>
+        <h1 class="brand-title">多师傅的 BTC 投研看板</h1>
+        <div class="brand-subtitle">
+          当前先上线第一个宏观模块：FED 降息概率。后续可以继续接入 ETF 净流入、稳定币供给、Coinbase 溢价、链上筹码、期权 Gamma 与清算地图。
+        </div>
+      </div>
+
+      <div class="top-status">
+        <div class="top-status-label">北京时间</div>
+        <div class="top-status-value" id="beijingNow">--</div>
+      </div>
+    </header>
+
+    <section class="module">
+      <div class="module-header">
+        <div>
+          <div class="module-kicker">MODULE 01 · FED WATCH</div>
+          <h2 class="module-title">美联储降息概率与宏观宽松定价</h2>
+          <div class="module-desc">
+            以 CME FedWatch 为核心口径，追踪下次 FOMC 的降息、维持、加息概率，并转化为适合 BTC 投研使用的“降息压力指数”。
+          </div>
+        </div>
+
+        <div class="module-source">
+          <a class="source-pill" href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank">
+            CME FedWatch →
+          </a>
+        </div>
+      </div>
+
+      <div class="fed-grid">
+        <div class="card main-card">
+          <div class="card-title">下次 FOMC 降息概率</div>
+
+          <div class="prob-row">
+            <div class="big-prob" id="cutProb">--%</div>
+            <div class="prob-meta">
+              <div id="meetingDate">下次会议：--</div>
+              <div id="currentRange">当前利率区间：--</div>
+              <div id="updatedAt">更新时间：--</div>
+            </div>
+          </div>
+
+          <div class="bar-section">
+            <div class="bar-labels">
+              <span>降息</span>
+              <span>维持</span>
+              <span>加息</span>
+            </div>
+
+            <div class="bars">
+              <div class="bar bar-cut" id="cutBar"></div>
+              <div class="bar bar-hold" id="holdBar"></div>
+              <div class="bar bar-hike" id="hikeBar"></div>
+            </div>
+
+            <div class="bar-values">
+              <span id="cutValue">--%</span>
+              <span id="holdValue">--%</span>
+              <span id="hikeValue">--%</span>
+            </div>
+          </div>
+
+          <div class="mini-tags">
+            <span class="mini-tag" id="expectedRate">隐含政策利率：--</span>
+            <span class="mini-tag" id="expectedCuts">年内隐含降息：--</span>
+            <span class="mini-tag" id="policyBias">政策定价：--</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">市场定价结论</div>
+          <div class="signal" id="marketSignal">--</div>
+          <p class="card-text" id="marketConclusion">等待数据更新。</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">降息压力指数</div>
+          <div class="score" id="pressureScore">--</div>
+          <div class="score-sub">0 = 无宽松交易，100 = 极端宽松定价</div>
+          <p class="card-text" id="pressureText">等待数据更新。</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">降息概率变化</div>
+          <div class="change-list">
+            <div class="change-item">
+              <span>较昨日</span>
+              <b id="change1d">--</b>
+            </div>
+            <div class="change-item">
+              <span>较一周前</span>
+              <b id="change1w">--</b>
+            </div>
+            <div class="change-item">
+              <span>较一月前</span>
+              <b id="change1m">--</b>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="indicator-grid">
+        <div class="indicator-card">
+          <div class="indicator-name">宏观方向</div>
+          <div class="indicator-value" id="macroDirection">--</div>
+          <div class="indicator-desc" id="macroDirectionDesc">根据降息概率与变化速度判断宏观风向。</div>
+        </div>
+
+        <div class="indicator-card">
+          <div class="indicator-name">BTC 影响</div>
+          <div class="indicator-value" id="btcImpact">--</div>
+          <div class="indicator-desc" id="btcImpactDesc">降息预期上升通常利好高贝塔资产，但也要看是否源于衰退交易。</div>
+        </div>
+
+        <div class="indicator-card">
+          <div class="indicator-name">风险提示</div>
+          <div class="indicator-value" id="riskLevel">--</div>
+          <div class="indicator-desc" id="riskDesc">概率过度拥挤时，CPI、非农、FOMC 发言容易引发反向波动。</div>
+        </div>
+
+        <div class="indicator-card">
+          <div class="indicator-name">更新频率</div>
+          <div class="indicator-value">08:00</div>
+          <div class="indicator-desc">北京时间每日早上 8 点更新；当前版本为无 API 静态数据结构。</div>
+        </div>
+      </div>
+
+      <div class="note">
+        数据说明：当前版本没有接 CME 官方 API，所以这里先使用本地数据结构展示。你以后只需要改代码里的
+        <b>FEDWATCH_DATA</b>，或者把它替换为 Supabase / Vercel KV / 官方 API 返回值，整个模块就能自动刷新。
+      </div>
+    </section>
+
+    <div class="placeholder-module">
+      后续模块预留：ETF 净流入 / 稳定币供给 / Coinbase 溢价 / 交易所 BTC 余额 / 期权 Gamma / 清算地图
+    </div>
+  </main>
+
+  <script>
+    const FEDWATCH_DATA = {
+      updatedAt: "2026-05-15 08:00 北京时间",
+      source: "CME FedWatch",
+      currentRange: "3.50% - 3.75%",
+      meetingDate: "2026-06-17",
+
+      cutProb: 42.5,
+      holdProb: 54.0,
+      hikeProb: 3.5,
+
+      change1d: -2.1,
+      change1w: 8.4,
+      change1m: 15.7,
+
+      expectedPolicyRate: "3.42%",
+      expectedCuts2026: 1.2
+    };
+
+    function formatBeijingTime() {
+      const now = new Date();
+
+      return new Intl.DateTimeFormat("zh-CN", {
+        timeZone: "Asia/Shanghai",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).format(now);
+    }
+
+    function updateClock() {
+      document.getElementById("beijingNow").textContent = formatBeijingTime();
+    }
+
+    function formatPercent(value) {
+      const num = Number(value || 0);
+      return num.toFixed(1) + "%";
+    }
+
+    function formatChange(value) {
+      const num = Number(value || 0);
+      const sign = num > 0 ? "+" : "";
+      return sign + num.toFixed(1) + " pct";
+    }
+
+    function setChangeClass(elementId, value) {
+      const el = document.getElementById(elementId);
+      el.textContent = formatChange(value);
+
+      if (value > 0) {
+        el.className = "positive";
+      } else if (value < 0) {
+        el.className = "negative";
+      } else {
+        el.className = "neutral";
+      }
+    }
+
+    function calculatePressureScore(data) {
+      const cut = Number(data.cutProb || 0);
+      const oneWeekChange = Number(data.change1w || 0);
+      const oneMonthChange = Number(data.change1m || 0);
+      const expectedCuts = Number(data.expectedCuts2026 || 0);
+
+      const score =
+        cut * 0.68 +
+        Math.max(oneWeekChange, 0) * 1.35 +
+        Math.max(oneMonthChange, 0) * 0.42 +
+        expectedCuts * 7.5;
+
+      return Math.round(Math.min(100, Math.max(0, score)));
+    }
+
+    function getMarketSignal(data, score) {
+      const cut = Number(data.cutProb || 0);
+      const hold = Number(data.holdProb || 0);
+      const hike = Number(data.hikeProb || 0);
+      const weeklyChange = Number(data.change1w || 0);
+
+      if (hike >= 20) {
+        return {
+          signal: "加息尾部风险",
+          conclusion: "加息概率抬升，说明通胀压力或政策鹰派风险重新定价，对 BTC、美股成长股和长久期资产偏利空。",
+          macroDirection: "偏鹰",
+          btcImpact: "承压",
+          riskLevel: "高"
+        };
+      }
+
+      if (cut >= 70 && score >= 75) {
+        return {
+          signal: "强降息交易",
+          conclusion: "市场已经明显转向宽松定价，利率下行和风险资产估值扩张逻辑占优，但预期也更容易被鹰派数据反杀。",
+          macroDirection: "明显转松",
+          btcImpact: "偏利多",
+          riskLevel: "中高"
+        };
+      }
+
+      if (cut >= 50) {
+        return {
+          signal: "温和降息交易",
+          conclusion: "降息已经成为阶段性主线，但还不是极端一致预期。对 BTC 更偏正面，尤其有利于高贝塔和流动性敏感资产。",
+          macroDirection: "边际转松",
+          btcImpact: "偏利多",
+          riskLevel: "中"
+        };
+      }
+
+      if (hold >= 60 && weeklyChange < 0) {
+        return {
+          signal: "高利率维持",
+          conclusion: "市场仍以维持利率为主，宽松交易不足。BTC 上行更多依赖 ETF 流入、稳定币扩张和风险偏好，而非利率端驱动。",
+          macroDirection: "中性偏紧",
+          btcImpact: "中性偏空",
+          riskLevel: "中"
+        };
+      }
+
+      return {
+        signal: "中性观察",
+        conclusion: "降息与维持利率之间仍未形成压倒性定价，市场更可能跟随 CPI、非农、FOMC 发言和美债收益率波动。",
+        macroDirection: "中性",
+        btcImpact: "震荡",
+        riskLevel: "中"
+      };
+    }
+
+    function getPressureText(score) {
+      if (score >= 80) {
+        return "宽松交易已经非常拥挤，利好风险资产，但对鹰派数据极度敏感。";
+      }
+
+      if (score >= 65) {
+        return "市场已进入较强降息交易区间，BTC 宏观环境偏友好。";
+      }
+
+      if (score >= 45) {
+        return "降息预期处于可交易区间，但还没有形成极端宽松定价。";
+      }
+
+      if (score >= 25) {
+        return "降息压力偏低，市场仍更关注通胀黏性和高利率维持。";
+      }
+
+      return "宽松预期很弱，高利率环境仍是风险资产的重要压制。";
+    }
+
+    function renderFedWatch(data) {
+      const cut = Number(data.cutProb || 0);
+      const hold = Number(data.holdProb || 0);
+      const hike = Number(data.hikeProb || 0);
+
+      const total = cut + hold + hike;
+      const cutWidth = total > 0 ? (cut / total) * 100 : 0;
+      const holdWidth = total > 0 ? (hold / total) * 100 : 0;
+      const hikeWidth = total > 0 ? (hike / total) * 100 : 0;
+
+      const pressureScore = calculatePressureScore(data);
+      const signalData = getMarketSignal(data, pressureScore);
+
+      document.getElementById("cutProb").textContent = formatPercent(cut);
+      document.getElementById("meetingDate").textContent = "下次会议：" + data.meetingDate;
+      document.getElementById("currentRange").textContent = "当前利率区间：" + data.currentRange;
+      document.getElementById("updatedAt").textContent = "更新时间：" + data.updatedAt;
+
+      document.getElementById("cutBar").style.width = cutWidth + "%";
+      document.getElementById("holdBar").style.width = holdWidth + "%";
+      document.getElementById("hikeBar").style.width = hikeWidth + "%";
+
+      document.getElementById("cutValue").textContent = formatPercent(cut);
+      document.getElementById("holdValue").textContent = formatPercent(hold);
+      document.getElementById("hikeValue").textContent = formatPercent(hike);
+
+      document.getElementById("expectedRate").textContent = "隐含政策利率：" + data.expectedPolicyRate;
+      document.getElementById("expectedCuts").textContent = "年内隐含降息：" + data.expectedCuts2026 + " 次";
+
+      let policyBias = "中性";
+      if (cut >= 60) policyBias = "转向宽松";
+      if (hold >= 65) policyBias = "维持高利率";
+      if (hike >= 15) policyBias = "鹰派风险";
+      document.getElementById("policyBias").textContent = "政策定价：" + policyBias;
+
+      document.getElementById("marketSignal").textContent = signalData.signal;
+      document.getElementById("marketConclusion").textContent = signalData.conclusion;
+
+      document.getElementById("pressureScore").textContent = pressureScore + "/100";
+      document.getElementById("pressureText").textContent = getPressureText(pressureScore);
+
+      setChangeClass("change1d", data.change1d);
+      setChangeClass("change1w", data.change1w);
+      setChangeClass("change1m", data.change1m);
+
+      document.getElementById("macroDirection").textContent = signalData.macroDirection;
+      document.getElementById("btcImpact").textContent = signalData.btcImpact;
+      document.getElementById("riskLevel").textContent = signalData.riskLevel;
+
+      document.getElementById("macroDirectionDesc").textContent =
+        "当前宏观方向由降息概率、周度变化和加息尾部风险共同决定。";
+
+      document.getElementById("btcImpactDesc").textContent =
+        signalData.btcImpact === "偏利多"
+          ? "降息预期抬升对 BTC 的估值和流动性定价偏正面。"
+          : signalData.btcImpact === "中性偏空"
+          ? "高利率维持会压制风险资产估值，BTC 更依赖自身资金流。"
+          : signalData.btcImpact === "承压"
+          ? "鹰派风险上升会压制高贝塔资产，BTC 短线承压概率更高。"
+          : "BTC 暂时缺乏明确的利率端方向，需要结合 ETF 与稳定币数据确认。";
+
+      document.getElementById("riskDesc").textContent =
+        pressureScore >= 70
+          ? "降息交易较拥挤，CPI、非农或鹰派讲话容易触发反向波动。"
+          : "风险主要来自通胀数据、就业数据和 FOMC 官员表态的再定价。";
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    renderFedWatch(FEDWATCH_DATA);
+  </script>
+</body>
+</html>
