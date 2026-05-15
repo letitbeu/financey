@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>多师傅的 BTC 投研看板</title>
+  <title>Financey 宏观金融看板</title>
 
   <style>
     :root {
@@ -15,12 +15,14 @@
       --text-main: #f8fafc;
       --text-sub: #cbd5e1;
       --text-muted: #94a3b8;
+
       --blue: #38bdf8;
       --green: #22c55e;
       --orange: #f97316;
       --red: #ef4444;
       --yellow: #facc15;
       --purple: #a78bfa;
+      --slate: #64748b;
     }
 
     * {
@@ -32,8 +34,8 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC",
         "Microsoft YaHei", Arial, sans-serif;
       background:
-        radial-gradient(circle at 20% 0%, rgba(56, 189, 248, 0.12), transparent 28%),
-        radial-gradient(circle at 80% 10%, rgba(167, 139, 250, 0.10), transparent 28%),
+        radial-gradient(circle at 18% 0%, rgba(56, 189, 248, 0.13), transparent 28%),
+        radial-gradient(circle at 82% 6%, rgba(167, 139, 250, 0.11), transparent 28%),
         linear-gradient(180deg, #050816 0%, #070b13 45%, #060914 100%);
       color: var(--text-main);
       min-height: 100vh;
@@ -68,7 +70,8 @@
       margin: 0;
       font-size: 30px;
       line-height: 1.15;
-      font-weight: 800;
+      font-weight: 850;
+      letter-spacing: -0.03em;
     }
 
     .brand-subtitle {
@@ -76,11 +79,11 @@
       color: var(--text-sub);
       font-size: 14px;
       line-height: 1.7;
-      max-width: 760px;
+      max-width: 800px;
     }
 
     .top-status {
-      min-width: 220px;
+      min-width: 240px;
       border: 1px solid var(--border-soft);
       background: rgba(15, 23, 42, 0.62);
       border-radius: 18px;
@@ -97,7 +100,7 @@
     .top-status-value {
       font-size: 14px;
       color: var(--text-main);
-      font-weight: 700;
+      font-weight: 750;
     }
 
     .module {
@@ -128,14 +131,16 @@
       margin: 0;
       font-size: 22px;
       line-height: 1.25;
-      font-weight: 800;
+      font-weight: 850;
+      letter-spacing: -0.02em;
     }
 
     .module-desc {
       color: var(--text-sub);
       margin-top: 8px;
       font-size: 13px;
-      line-height: 1.6;
+      line-height: 1.65;
+      max-width: 820px;
     }
 
     .module-source {
@@ -157,12 +162,11 @@
       color: #bfdbfe;
       background: rgba(59, 130, 246, 0.12);
       border: 1px solid rgba(147, 197, 253, 0.18);
+      white-space: nowrap;
     }
 
-    .fed-grid {
-      display: grid;
-      grid-template-columns: 1.55fr 1fr 1fr 1fr;
-      gap: 14px;
+    .source-pill:hover {
+      background: rgba(59, 130, 246, 0.2);
     }
 
     .card {
@@ -181,6 +185,74 @@
       color: var(--text-muted);
       font-size: 13px;
       margin-bottom: 12px;
+    }
+
+    .card-text {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.68;
+    }
+
+    .signal {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      background: rgba(56, 189, 248, 0.12);
+      color: #7dd3fc;
+      border: 1px solid rgba(125, 211, 252, 0.18);
+    }
+
+    .score {
+      font-size: 38px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+
+    .score-sub {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .positive {
+      color: var(--green) !important;
+    }
+
+    .negative {
+      color: var(--red) !important;
+    }
+
+    .neutral {
+      color: var(--text-main) !important;
+    }
+
+    .note {
+      margin-top: 16px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: rgba(2, 6, 23, 0.34);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .note b {
+      color: var(--text-sub);
+    }
+
+    /* Module 01: FedWatch */
+    .fed-grid {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr 1fr 1fr;
+      gap: 14px;
     }
 
     .prob-row {
@@ -259,45 +331,11 @@
     }
 
     .bar-hold {
-      background: #64748b;
+      background: var(--slate);
     }
 
     .bar-hike {
       background: var(--orange);
-    }
-
-    .signal {
-      display: inline-flex;
-      align-items: center;
-      padding: 7px 11px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 10px;
-      background: rgba(56, 189, 248, 0.12);
-      color: #7dd3fc;
-      border: 1px solid rgba(125, 211, 252, 0.18);
-    }
-
-    .card-text {
-      margin: 0;
-      font-size: 13px;
-      color: var(--text-sub);
-      line-height: 1.68;
-    }
-
-    .score {
-      font-size: 38px;
-      line-height: 1;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      margin-bottom: 10px;
-    }
-
-    .score-sub {
-      color: var(--text-muted);
-      font-size: 12px;
-      margin-bottom: 10px;
     }
 
     .change-list {
@@ -323,18 +361,6 @@
     .change-item b {
       color: var(--text-main);
       white-space: nowrap;
-    }
-
-    .positive {
-      color: var(--green) !important;
-    }
-
-    .negative {
-      color: var(--red) !important;
-    }
-
-    .neutral {
-      color: var(--text-main) !important;
     }
 
     .indicator-grid {
@@ -369,15 +395,130 @@
       line-height: 1.55;
     }
 
-    .note {
-      margin-top: 16px;
-      padding: 13px 14px;
+    /* Module 02: Treasury */
+    .treasury-grid {
+      display: grid;
+      grid-template-columns: 1.45fr 1fr 1fr 1fr;
+      gap: 14px;
+    }
+
+    .treasury-main-card {
+      min-height: 230px;
+    }
+
+    .yield-curve-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .yield-point {
       border-radius: 16px;
-      background: rgba(2, 6, 23, 0.34);
-      border: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(2, 6, 23, 0.28);
+      border: 1px solid rgba(148, 163, 184, 0.10);
+      padding: 14px;
+    }
+
+    .yield-label {
       color: var(--text-muted);
       font-size: 12px;
-      line-height: 1.65;
+      margin-bottom: 8px;
+    }
+
+    .yield-value {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .yield-change {
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .curve-visual {
+      margin-top: 8px;
+    }
+
+    .curve-line {
+      position: relative;
+      height: 72px;
+      border-radius: 16px;
+      background:
+        linear-gradient(180deg, rgba(148, 163, 184, 0.08), rgba(148, 163, 184, 0.02));
+      border: 1px solid rgba(148, 163, 184, 0.10);
+      overflow: hidden;
+    }
+
+    .curve-line::before {
+      content: "";
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 50%;
+      height: 2px;
+      background: rgba(148, 163, 184, 0.22);
+    }
+
+    .curve-dot {
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      border-radius: 999px;
+      background: var(--blue);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.8);
+      transform: translate(-50%, -50%);
+    }
+
+    #curveDot2y {
+      left: 15%;
+    }
+
+    #curveDot10y {
+      left: 50%;
+    }
+
+    #curveDot30y {
+      left: 85%;
+    }
+
+    .curve-axis {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 8px 0;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    /* Module 03: Equity */
+    .equity-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .index-card {
+      min-height: 170px;
+    }
+
+    .index-value {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .index-change {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight: 850;
+      margin-bottom: 12px;
+      background: rgba(148, 163, 184, 0.10);
     }
 
     .placeholder-module {
@@ -389,19 +530,23 @@
       color: var(--text-muted);
       text-align: center;
       font-size: 14px;
+      line-height: 1.7;
     }
 
     @media (max-width: 1080px) {
-      .fed-grid {
+      .fed-grid,
+      .treasury-grid {
         grid-template-columns: 1fr 1fr;
       }
 
-      .indicator-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .main-card {
+      .main-card,
+      .treasury-main-card {
         grid-column: span 2;
+      }
+
+      .indicator-grid,
+      .equity-grid {
+        grid-template-columns: 1fr 1fr;
       }
     }
 
@@ -432,11 +577,14 @@
       }
 
       .fed-grid,
-      .indicator-grid {
+      .treasury-grid,
+      .indicator-grid,
+      .equity-grid {
         grid-template-columns: 1fr;
       }
 
-      .main-card {
+      .main-card,
+      .treasury-main-card {
         grid-column: span 1;
       }
 
@@ -448,6 +596,10 @@
       .big-prob {
         font-size: 48px;
       }
+
+      .yield-curve-row {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -456,10 +608,10 @@
   <main class="page">
     <header class="topbar">
       <div>
-        <div class="brand-kicker">BTC MACRO DASHBOARD</div>
-        <h1 class="brand-title">多师傅的 BTC 投研看板</h1>
+        <div class="brand-kicker">GLOBAL MACRO DASHBOARD</div>
+        <h1 class="brand-title">Financey 宏观金融看板</h1>
         <div class="brand-subtitle">
-          当前先上线第一个宏观模块：FED 降息概率。后续可以继续接入 ETF 净流入、稳定币供给、Coinbase 溢价、链上筹码、期权 Gamma 与清算地图。
+          聚焦美联储政策预期、美债收益率曲线、美股指数表现与传统金融市场风险偏好。当前版本为静态数据结构，后续可接入 FRED、Yahoo Finance、Alpha Vantage 或其他金融数据源。
         </div>
       </div>
 
@@ -469,13 +621,14 @@
       </div>
     </header>
 
+    <!-- Module 01 -->
     <section class="module">
       <div class="module-header">
         <div>
           <div class="module-kicker">MODULE 01 · FED WATCH</div>
-          <h2 class="module-title">美联储降息概率与宏观宽松定价</h2>
+          <h2 class="module-title">美联储降息概率与政策预期</h2>
           <div class="module-desc">
-            以 CME FedWatch 为核心口径，追踪下次 FOMC 的降息、维持、加息概率，并转化为适合 BTC 投研使用的“降息压力指数”。
+            以 CME FedWatch 为核心口径，跟踪下次 FOMC 的降息、维持、加息概率，并转化为适合宏观金融市场观察的“降息压力指数”。
           </div>
         </div>
 
@@ -566,15 +719,15 @@
         </div>
 
         <div class="indicator-card">
-          <div class="indicator-name">BTC 影响</div>
-          <div class="indicator-value" id="btcImpact">--</div>
-          <div class="indicator-desc" id="btcImpactDesc">降息预期上升通常利好高贝塔资产，但也要看是否源于衰退交易。</div>
+          <div class="indicator-name">美股影响</div>
+          <div class="indicator-value" id="equityImpact">--</div>
+          <div class="indicator-desc" id="equityImpactDesc">降息预期上升通常利好长久期资产和成长股估值。</div>
         </div>
 
         <div class="indicator-card">
-          <div class="indicator-name">风险提示</div>
-          <div class="indicator-value" id="riskLevel">--</div>
-          <div class="indicator-desc" id="riskDesc">概率过度拥挤时，CPI、非农、FOMC 发言容易引发反向波动。</div>
+          <div class="indicator-name">债市影响</div>
+          <div class="indicator-value" id="bondImpact">--</div>
+          <div class="indicator-desc" id="bondImpactDesc">降息预期会影响短端利率、长端期限溢价和曲线形态。</div>
         </div>
 
         <div class="indicator-card">
@@ -585,13 +738,165 @@
       </div>
 
       <div class="note">
-        数据说明：当前版本没有接 CME 官方 API，所以这里先使用本地数据结构展示。你以后只需要改代码里的
+        数据说明：当前版本没有接 CME 官方 API，所以这里先使用本地数据结构展示。以后只需要改代码里的
         <b>FEDWATCH_DATA</b>，或者把它替换为 Supabase / Vercel KV / 官方 API 返回值，整个模块就能自动刷新。
       </div>
     </section>
 
+    <!-- Module 02 -->
+    <section class="module">
+      <div class="module-header">
+        <div>
+          <div class="module-kicker">MODULE 02 · U.S. TREASURY</div>
+          <h2 class="module-title">美债收益率曲线</h2>
+          <div class="module-desc">
+            跟踪 2Y、10Y、30Y 美债收益率，以及 10Y-2Y 利差，用于判断市场对经济增长、通胀、降息路径和期限溢价的定价。
+          </div>
+        </div>
+
+        <div class="module-source">
+          <a class="source-pill" href="https://fred.stlouisfed.org/" target="_blank">
+            FRED →
+          </a>
+        </div>
+      </div>
+
+      <div class="treasury-grid">
+        <div class="card treasury-main-card">
+          <div class="card-title">收益率曲线核心状态</div>
+
+          <div class="yield-curve-row">
+            <div class="yield-point">
+              <div class="yield-label">2Y Treasury</div>
+              <div class="yield-value" id="us2y">--</div>
+              <div class="yield-change" id="us2yChange">--</div>
+            </div>
+
+            <div class="yield-point">
+              <div class="yield-label">10Y Treasury</div>
+              <div class="yield-value" id="us10y">--</div>
+              <div class="yield-change" id="us10yChange">--</div>
+            </div>
+
+            <div class="yield-point">
+              <div class="yield-label">30Y Treasury</div>
+              <div class="yield-value" id="us30y">--</div>
+              <div class="yield-change" id="us30yChange">--</div>
+            </div>
+          </div>
+
+          <div class="curve-visual">
+            <div class="curve-line">
+              <span id="curveDot2y" class="curve-dot"></span>
+              <span id="curveDot10y" class="curve-dot"></span>
+              <span id="curveDot30y" class="curve-dot"></span>
+            </div>
+            <div class="curve-axis">
+              <span>2Y</span>
+              <span>10Y</span>
+              <span>30Y</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">10Y - 2Y 利差</div>
+          <div class="score" id="spread10y2y">--</div>
+          <div class="signal" id="curveSignal">--</div>
+          <p class="card-text" id="curveConclusion">等待数据更新。</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">债市宏观含义</div>
+          <div class="signal" id="bondMacroSignal">--</div>
+          <p class="card-text" id="bondMacroText">等待数据更新。</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">风险资产影响</div>
+          <div class="signal" id="bondRiskSignal">--</div>
+          <p class="card-text" id="bondRiskText">等待数据更新。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Module 03 -->
+    <section class="module">
+      <div class="module-header">
+        <div>
+          <div class="module-kicker">MODULE 03 · EQUITY MARKET</div>
+          <h2 class="module-title">美股指数表现</h2>
+          <div class="module-desc">
+            跟踪标普 500、纳斯达克 100、道琼斯、罗素 2000，用于判断美股风险偏好、成长股强弱、价值股表现和小盘股市场广度。
+          </div>
+        </div>
+
+        <div class="module-source">
+          <a class="source-pill" href="https://finance.yahoo.com/" target="_blank">
+            Yahoo Finance →
+          </a>
+        </div>
+      </div>
+
+      <div class="equity-grid">
+        <div class="card index-card">
+          <div class="card-title">S&P 500</div>
+          <div class="index-value" id="spxValue">--</div>
+          <div class="index-change" id="spxChange">--</div>
+          <p class="card-text" id="spxText">美国大盘股核心风险资产。</p>
+        </div>
+
+        <div class="card index-card">
+          <div class="card-title">Nasdaq 100</div>
+          <div class="index-value" id="ndxValue">--</div>
+          <div class="index-change" id="ndxChange">--</div>
+          <p class="card-text" id="ndxText">科技股、成长股和长久期权益资产代表。</p>
+        </div>
+
+        <div class="card index-card">
+          <div class="card-title">Dow Jones</div>
+          <div class="index-value" id="djiValue">--</div>
+          <div class="index-change" id="djiChange">--</div>
+          <p class="card-text" id="djiText">传统蓝筹、工业股和价值股代表。</p>
+        </div>
+
+        <div class="card index-card">
+          <div class="card-title">Russell 2000</div>
+          <div class="index-value" id="rutValue">--</div>
+          <div class="index-change" id="rutChange">--</div>
+          <p class="card-text" id="rutText">小盘股与美国内需风险偏好代表。</p>
+        </div>
+      </div>
+
+      <div class="indicator-grid">
+        <div class="indicator-card">
+          <div class="indicator-name">美股风险偏好</div>
+          <div class="indicator-value" id="equityRiskAppetite">--</div>
+          <div class="indicator-desc" id="equityRiskDesc">根据主要指数涨跌与整体方向判断。</div>
+        </div>
+
+        <div class="indicator-card">
+          <div class="indicator-name">成长股强弱</div>
+          <div class="indicator-value" id="growthStrength">--</div>
+          <div class="indicator-desc" id="growthStrengthDesc">纳指强于标普，通常代表成长股风险偏好更强。</div>
+        </div>
+
+        <div class="indicator-card">
+          <div class="indicator-name">市场广度</div>
+          <div class="indicator-value" id="marketBreadth">--</div>
+          <div class="indicator-desc" id="marketBreadthDesc">罗素 2000 强弱用于观察行情是否从大盘龙头扩散。</div>
+        </div>
+
+        <div class="indicator-card">
+          <div class="indicator-name">股债联动</div>
+          <div class="indicator-value" id="stockBondSignal">--</div>
+          <div class="indicator-desc" id="stockBondDesc">结合 10Y 美债变化与美股表现判断估值压力。</div>
+        </div>
+      </div>
+    </section>
+
     <div class="placeholder-module">
-      后续模块预留：ETF 净流入 / 稳定币供给 / Coinbase 溢价 / 交易所 BTC 余额 / 期权 Gamma / 清算地图
+      后续模块预留：美元指数 DXY、黄金、VIX、MOVE、信用利差、CPI、PCE、非农、PMI、金融条件指数。
     </div>
   </main>
 
@@ -612,6 +917,34 @@
 
       expectedPolicyRate: "3.42%",
       expectedCuts2026: 1.2
+    };
+
+    const TREASURY_DATA = {
+      updatedAt: "2026-05-15 08:00 北京时间",
+
+      us2y: 3.62,
+      us10y: 4.08,
+      us30y: 4.68,
+
+      us2yChange: -3.5,
+      us10yChange: -2.1,
+      us30yChange: 0.8
+    };
+
+    const EQUITY_DATA = {
+      updatedAt: "2026-05-15 08:00 北京时间",
+
+      spx: 6845.2,
+      spxChange: 0.42,
+
+      ndx: 25280.7,
+      ndxChange: 0.76,
+
+      dji: 47720.1,
+      djiChange: 0.18,
+
+      rut: 2475.6,
+      rutChange: -0.31
     };
 
     function formatBeijingTime() {
@@ -644,6 +977,28 @@
       return sign + num.toFixed(1) + " pct";
     }
 
+    function formatYield(value) {
+      return Number(value || 0).toFixed(2) + "%";
+    }
+
+    function formatBp(value) {
+      const num = Number(value || 0);
+      const sign = num > 0 ? "+" : "";
+      return sign + num.toFixed(1) + " bp";
+    }
+
+    function formatIndex(value) {
+      return Number(value || 0).toLocaleString("en-US", {
+        maximumFractionDigits: 1
+      });
+    }
+
+    function formatIndexChange(value) {
+      const num = Number(value || 0);
+      const sign = num > 0 ? "+" : "";
+      return sign + num.toFixed(2) + "%";
+    }
+
     function setChangeClass(elementId, value) {
       const el = document.getElementById(elementId);
       el.textContent = formatChange(value);
@@ -654,6 +1009,32 @@
         el.className = "negative";
       } else {
         el.className = "neutral";
+      }
+    }
+
+    function setDirectionalText(elementId, value, unitFormatter) {
+      const el = document.getElementById(elementId);
+      el.textContent = unitFormatter(value);
+
+      if (value > 0) {
+        el.className = "yield-change positive";
+      } else if (value < 0) {
+        el.className = "yield-change negative";
+      } else {
+        el.className = "yield-change neutral";
+      }
+    }
+
+    function setIndexChange(elementId, value) {
+      const el = document.getElementById(elementId);
+      el.textContent = formatIndexChange(value);
+
+      if (value > 0) {
+        el.className = "index-change positive";
+      } else if (value < 0) {
+        el.className = "index-change negative";
+      } else {
+        el.className = "index-change neutral";
       }
     }
 
@@ -672,7 +1053,7 @@
       return Math.round(Math.min(100, Math.max(0, score)));
     }
 
-    function getMarketSignal(data, score) {
+    function getFedMarketSignal(data, score) {
       const cut = Number(data.cutProb || 0);
       const hold = Number(data.holdProb || 0);
       const hike = Number(data.hikeProb || 0);
@@ -681,40 +1062,40 @@
       if (hike >= 20) {
         return {
           signal: "加息尾部风险",
-          conclusion: "加息概率抬升，说明通胀压力或政策鹰派风险重新定价，对 BTC、美股成长股和长久期资产偏利空。",
+          conclusion: "加息概率抬升，说明通胀压力或政策鹰派风险重新定价，对美股估值、长久期资产和债券价格偏利空。",
           macroDirection: "偏鹰",
-          btcImpact: "承压",
-          riskLevel: "高"
+          equityImpact: "承压",
+          bondImpact: "收益率上行风险"
         };
       }
 
       if (cut >= 70 && score >= 75) {
         return {
           signal: "强降息交易",
-          conclusion: "市场已经明显转向宽松定价，利率下行和风险资产估值扩张逻辑占优，但预期也更容易被鹰派数据反杀。",
+          conclusion: "市场已经明显转向宽松定价，利率下行和权益估值扩张逻辑占优，但预期也更容易被鹰派数据反杀。",
           macroDirection: "明显转松",
-          btcImpact: "偏利多",
-          riskLevel: "中高"
+          equityImpact: "偏利多",
+          bondImpact: "短端下行"
         };
       }
 
       if (cut >= 50) {
         return {
           signal: "温和降息交易",
-          conclusion: "降息已经成为阶段性主线，但还不是极端一致预期。对 BTC 更偏正面，尤其有利于高贝塔和流动性敏感资产。",
+          conclusion: "降息已经成为阶段性主线，但还不是极端一致预期。对成长股、科技股和长久期资产相对友好。",
           macroDirection: "边际转松",
-          btcImpact: "偏利多",
-          riskLevel: "中"
+          equityImpact: "偏利多",
+          bondImpact: "曲线可能牛陡"
         };
       }
 
       if (hold >= 60 && weeklyChange < 0) {
         return {
           signal: "高利率维持",
-          conclusion: "市场仍以维持利率为主，宽松交易不足。BTC 上行更多依赖 ETF 流入、稳定币扩张和风险偏好，而非利率端驱动。",
+          conclusion: "市场仍以维持利率为主，宽松交易不足。美股上行更多依赖盈利和风险偏好，而非利率端驱动。",
           macroDirection: "中性偏紧",
-          btcImpact: "中性偏空",
-          riskLevel: "中"
+          equityImpact: "中性偏空",
+          bondImpact: "短端粘性"
         };
       }
 
@@ -722,8 +1103,8 @@
         signal: "中性观察",
         conclusion: "降息与维持利率之间仍未形成压倒性定价，市场更可能跟随 CPI、非农、FOMC 发言和美债收益率波动。",
         macroDirection: "中性",
-        btcImpact: "震荡",
-        riskLevel: "中"
+        equityImpact: "震荡",
+        bondImpact: "等待确认"
       };
     }
 
@@ -733,7 +1114,7 @@
       }
 
       if (score >= 65) {
-        return "市场已进入较强降息交易区间，BTC 宏观环境偏友好。";
+        return "市场已进入较强降息交易区间，权益和债券定价环境偏友好。";
       }
 
       if (score >= 45) {
@@ -758,7 +1139,7 @@
       const hikeWidth = total > 0 ? (hike / total) * 100 : 0;
 
       const pressureScore = calculatePressureScore(data);
-      const signalData = getMarketSignal(data, pressureScore);
+      const signalData = getFedMarketSignal(data, pressureScore);
 
       document.getElementById("cutProb").textContent = formatPercent(cut);
       document.getElementById("meetingDate").textContent = "下次会议：" + data.meetingDate;
@@ -780,6 +1161,7 @@
       if (cut >= 60) policyBias = "转向宽松";
       if (hold >= 65) policyBias = "维持高利率";
       if (hike >= 15) policyBias = "鹰派风险";
+
       document.getElementById("policyBias").textContent = "政策定价：" + policyBias;
 
       document.getElementById("marketSignal").textContent = signalData.signal;
@@ -793,31 +1175,185 @@
       setChangeClass("change1m", data.change1m);
 
       document.getElementById("macroDirection").textContent = signalData.macroDirection;
-      document.getElementById("btcImpact").textContent = signalData.btcImpact;
-      document.getElementById("riskLevel").textContent = signalData.riskLevel;
+      document.getElementById("equityImpact").textContent = signalData.equityImpact;
+      document.getElementById("bondImpact").textContent = signalData.bondImpact;
 
       document.getElementById("macroDirectionDesc").textContent =
         "当前宏观方向由降息概率、周度变化和加息尾部风险共同决定。";
 
-      document.getElementById("btcImpactDesc").textContent =
-        signalData.btcImpact === "偏利多"
-          ? "降息预期抬升对 BTC 的估值和流动性定价偏正面。"
-          : signalData.btcImpact === "中性偏空"
-          ? "高利率维持会压制风险资产估值，BTC 更依赖自身资金流。"
-          : signalData.btcImpact === "承压"
-          ? "鹰派风险上升会压制高贝塔资产，BTC 短线承压概率更高。"
-          : "BTC 暂时缺乏明确的利率端方向，需要结合 ETF 与稳定币数据确认。";
+      document.getElementById("equityImpactDesc").textContent =
+        signalData.equityImpact === "偏利多"
+          ? "降息预期抬升对成长股和长久期权益资产估值偏正面。"
+          : signalData.equityImpact === "中性偏空"
+          ? "高利率维持会压制权益估值，市场更依赖盈利增长。"
+          : signalData.equityImpact === "承压"
+          ? "鹰派风险上升会抬高折现率，美股估值短线承压概率更高。"
+          : "美股暂时缺乏明确的利率端方向，需要结合盈利和风险偏好确认。";
 
-      document.getElementById("riskDesc").textContent =
-        pressureScore >= 70
-          ? "降息交易较拥挤，CPI、非农或鹰派讲话容易触发反向波动。"
-          : "风险主要来自通胀数据、就业数据和 FOMC 官员表态的再定价。";
+      document.getElementById("bondImpactDesc").textContent =
+        signalData.bondImpact === "短端下行"
+          ? "强降息交易通常会压低短端收益率，并推动曲线牛陡。"
+          : signalData.bondImpact === "曲线可能牛陡"
+          ? "温和降息预期一般利好短端债券，长端表现取决于期限溢价。"
+          : signalData.bondImpact === "短端粘性"
+          ? "高利率维持会让短端收益率更有粘性，债券价格弹性受限。"
+          : "债市方向仍需等待通胀、就业和 FOMC 信号确认。";
+    }
+
+    function renderTreasuryModule(data) {
+      const us2y = Number(data.us2y || 0);
+      const us10y = Number(data.us10y || 0);
+      const us30y = Number(data.us30y || 0);
+
+      const spread10y2y = (us10y - us2y) * 100;
+
+      document.getElementById("us2y").textContent = formatYield(us2y);
+      document.getElementById("us10y").textContent = formatYield(us10y);
+      document.getElementById("us30y").textContent = formatYield(us30y);
+
+      setDirectionalText("us2yChange", data.us2yChange, formatBp);
+      setDirectionalText("us10yChange", data.us10yChange, formatBp);
+      setDirectionalText("us30yChange", data.us30yChange, formatBp);
+
+      document.getElementById("spread10y2y").textContent = spread10y2y.toFixed(0) + " bp";
+
+      const minYield = Math.min(us2y, us10y, us30y);
+      const maxYield = Math.max(us2y, us10y, us30y);
+      const range = Math.max(maxYield - minYield, 0.01);
+
+      const dot2yTop = 64 - ((us2y - minYield) / range) * 48;
+      const dot10yTop = 64 - ((us10y - minYield) / range) * 48;
+      const dot30yTop = 64 - ((us30y - minYield) / range) * 48;
+
+      document.getElementById("curveDot2y").style.top = dot2yTop + "px";
+      document.getElementById("curveDot10y").style.top = dot10yTop + "px";
+      document.getElementById("curveDot30y").style.top = dot30yTop + "px";
+
+      let curveSignal = "正常曲线";
+      let curveConclusion = "10Y - 2Y 利差为正，说明市场对长期增长和通胀仍有一定期限溢价，衰退定价不算极端。";
+      let bondMacroSignal = "增长尚可";
+      let bondMacroText = "曲线正斜率通常代表市场没有极端押注衰退，但仍需结合前端利率是否快速下行判断降息交易。";
+      let bondRiskSignal = "中性";
+      let bondRiskText = "长端利率没有明显上冲时，对股票估值压力相对可控。";
+
+      if (spread10y2y < 0) {
+        curveSignal = "倒挂";
+        curveConclusion = "10Y - 2Y 利差为负，收益率曲线倒挂，代表市场对未来降息或经济放缓存在较强定价。";
+        bondMacroSignal = "衰退定价";
+        bondMacroText = "曲线倒挂通常意味着短端政策利率偏高，市场预期未来增长和通胀下行。";
+        bondRiskSignal = "谨慎";
+        bondRiskText = "倒挂本身不必然利空股票，但若伴随信用利差走阔，风险资产压力会明显上升。";
+      }
+
+      if (spread10y2y > 80) {
+        curveSignal = "陡峭化";
+        curveConclusion = "10Y - 2Y 利差明显走阔，曲线陡峭化，可能来自降息预期、期限溢价上升或财政供给压力。";
+        bondMacroSignal = "再通胀/宽松";
+        bondMacroText = "如果短端下行快于长端，通常代表降息交易；如果长端上行更快，则可能是期限溢价和财政风险。";
+        bondRiskSignal = "分化";
+        bondRiskText = "牛陡对股票偏友好，熊陡则会压制估值，需要观察 10Y 是上行还是下行。";
+      }
+
+      if (data.us10yChange > 8) {
+        bondRiskSignal = "估值承压";
+        bondRiskText = "10Y 美债快速上行会抬高折现率，对成长股和高估值资产形成压力。";
+      }
+
+      document.getElementById("curveSignal").textContent = curveSignal;
+      document.getElementById("curveConclusion").textContent = curveConclusion;
+      document.getElementById("bondMacroSignal").textContent = bondMacroSignal;
+      document.getElementById("bondMacroText").textContent = bondMacroText;
+      document.getElementById("bondRiskSignal").textContent = bondRiskSignal;
+      document.getElementById("bondRiskText").textContent = bondRiskText;
+    }
+
+    function renderEquityModule(data, treasuryData) {
+      document.getElementById("spxValue").textContent = formatIndex(data.spx);
+      document.getElementById("ndxValue").textContent = formatIndex(data.ndx);
+      document.getElementById("djiValue").textContent = formatIndex(data.dji);
+      document.getElementById("rutValue").textContent = formatIndex(data.rut);
+
+      setIndexChange("spxChange", data.spxChange);
+      setIndexChange("ndxChange", data.ndxChange);
+      setIndexChange("djiChange", data.djiChange);
+      setIndexChange("rutChange", data.rutChange);
+
+      const avgChange =
+        (Number(data.spxChange || 0) +
+          Number(data.ndxChange || 0) +
+          Number(data.djiChange || 0) +
+          Number(data.rutChange || 0)) / 4;
+
+      const growthSpread = Number(data.ndxChange || 0) - Number(data.spxChange || 0);
+      const breadthSpread = Number(data.rutChange || 0) - Number(data.spxChange || 0);
+      const us10yChange = Number(treasuryData.us10yChange || 0);
+
+      let riskAppetite = "中性";
+      let riskDesc = "主要指数涨跌分化，市场风险偏好没有形成明确方向。";
+
+      if (avgChange > 0.5) {
+        riskAppetite = "偏强";
+        riskDesc = "主要指数整体上涨，说明股票市场风险偏好较强。";
+      } else if (avgChange < -0.5) {
+        riskAppetite = "偏弱";
+        riskDesc = "主要指数整体下跌，说明股票市场风险偏好偏弱。";
+      }
+
+      let growthStrength = "均衡";
+      let growthDesc = "纳指相对标普没有明显超额收益，成长股与大盘风格较均衡。";
+
+      if (growthSpread > 0.35) {
+        growthStrength = "成长占优";
+        growthDesc = "纳指明显强于标普，说明科技成长股风险偏好更强，市场更偏长久期资产。";
+      } else if (growthSpread < -0.35) {
+        growthStrength = "价值占优";
+        growthDesc = "纳指弱于标普，说明成长股承压，市场可能更偏价值、防御或现金流资产。";
+      }
+
+      let marketBreadth = "一般";
+      let breadthDesc = "罗素 2000 相对标普没有明显优势，行情扩散程度一般。";
+
+      if (breadthSpread > 0.4) {
+        marketBreadth = "扩散";
+        breadthDesc = "小盘股强于大盘，说明行情从龙头向更广泛股票扩散，风险偏好改善。";
+      } else if (breadthSpread < -0.4) {
+        marketBreadth = "收窄";
+        breadthDesc = "小盘股弱于大盘，说明行情集中在龙头，市场广度不足。";
+      }
+
+      let stockBondSignal = "中性";
+      let stockBondDesc = "股债之间暂时没有明显冲突，等待利率和权益方向进一步确认。";
+
+      if (avgChange > 0 && us10yChange < 0) {
+        stockBondSignal = "股债友好";
+        stockBondDesc = "美股上涨同时 10Y 下行，属于典型估值友好组合。";
+      } else if (avgChange > 0 && us10yChange > 6) {
+        stockBondSignal = "估值拉扯";
+        stockBondDesc = "美股上涨但 10Y 也明显上行，短期风险偏好强，但估值压力正在累积。";
+      } else if (avgChange < 0 && us10yChange > 0) {
+        stockBondSignal = "双重压力";
+        stockBondDesc = "美股下跌且 10Y 上行，股票同时承受风险偏好与折现率压力。";
+      }
+
+      document.getElementById("equityRiskAppetite").textContent = riskAppetite;
+      document.getElementById("equityRiskDesc").textContent = riskDesc;
+
+      document.getElementById("growthStrength").textContent = growthStrength;
+      document.getElementById("growthStrengthDesc").textContent = growthDesc;
+
+      document.getElementById("marketBreadth").textContent = marketBreadth;
+      document.getElementById("marketBreadthDesc").textContent = breadthDesc;
+
+      document.getElementById("stockBondSignal").textContent = stockBondSignal;
+      document.getElementById("stockBondDesc").textContent = stockBondDesc;
     }
 
     updateClock();
     setInterval(updateClock, 1000);
 
     renderFedWatch(FEDWATCH_DATA);
+    renderTreasuryModule(TREASURY_DATA);
+    renderEquityModule(EQUITY_DATA, TREASURY_DATA);
   </script>
 </body>
 </html>
