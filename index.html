@@ -1,60 +1,294 @@
 
-<!-- 放在顶部 Risk Gauge 下方 -->
+<!-- Financey index(4) Alpha Macro Upgrade -->
+<!-- 将以下内容作为 index.html 主体结构参考 -->
 
-<section class="module briefing-module">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <div class="module-head">
-    <div class="module-title">
-      <span class="dot"></span>
-      ALPHA MACRO DAILY
-    </div>
+  <title>Financey 宏观金融终端</title>
 
-    <div class="tag">
-      Cross-Asset Narrative & Positioning Monitor
-    </div>
-  </div>
+  <style>
 
-  <div class="briefing-banner">
+    body{
+      margin:0;
+      background:#070b12;
+      color:#e5e7eb;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI";
+    }
 
-    当前市场正在交易 AI 算力扩张与大型科技资本开支，
-    但长端收益率重新上行正在压制高估值资产估值扩张。
+    .page{
+      width:min(1400px,calc(100% - 40px));
+      margin:auto;
+      padding:30px 0 80px;
+    }
 
-  </div>
+    .module{
+      margin-top:24px;
+      padding:24px;
+      border-radius:24px;
+      border:1px solid rgba(148,163,184,.14);
+      background:rgba(15,23,42,.72);
+      backdrop-filter:blur(10px);
+    }
 
-  <div class="narrative-grid">
+    .module-title{
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:.08em;
+      margin-bottom:18px;
+    }
 
-    <div class="narrative-card">
-      <h3>市场情绪与资金流向</h3>
-      <p>
-        Long-only 持续买入，
-        对冲基金开始降低 Beta 敞口。
-      </p>
-    </div>
+    .briefing-banner{
+      padding:18px;
+      border-radius:18px;
+      background:linear-gradient(
+        90deg,
+        rgba(37,99,235,.18),
+        rgba(15,23,42,.3)
+      );
+      font-size:15px;
+      line-height:1.7;
+      margin-bottom:18px;
+    }
 
-    <div class="narrative-card">
-      <h3>行业主线轮动</h3>
-      <p>
-        半导体与 AI 基础设施继续领涨，
-        小盘扩散仍有限。
-      </p>
-    </div>
+    .narrative-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
 
-    <div class="narrative-card">
-      <h3>宏观风险</h3>
-      <p>
-        长端利率重新上行，
-        滞胀风险回升。
-      </p>
-    </div>
+    .narrative-card{
+      padding:18px;
+      border-radius:18px;
+      background:rgba(2,6,23,.35);
+      border:1px solid rgba(148,163,184,.12);
+    }
 
-    <div class="narrative-card">
-      <h3>Gamma & Positioning</h3>
-      <p>
-        OPEX 周期 Gamma 买盘
-        仍在支撑 SPX。
-      </p>
-    </div>
+    .narrative-card h3{
+      margin:0 0 12px;
+      font-size:16px;
+    }
 
-  </div>
+    .narrative-card p{
+      color:#94a3b8;
+      line-height:1.7;
+      font-size:13px;
+    }
 
-</section>
+    .risk-orb{
+      width:320px;
+      height:320px;
+      border-radius:50%;
+      margin:auto;
+      display:grid;
+      place-items:center;
+      background:
+      conic-gradient(
+        #991b1b 0deg,
+        #b45309 70deg,
+        #2563eb 180deg,
+        #15803d 260deg,
+        rgba(51,65,85,.6) 260deg
+      );
+    }
+
+    .risk-inner{
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background:#070b12;
+      display:grid;
+      place-items:center;
+      font-size:72px;
+      font-weight:900;
+    }
+
+    .ai-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+
+    .ai-card{
+      padding:18px;
+      border-radius:18px;
+      background:rgba(2,6,23,.35);
+      border:1px solid rgba(148,163,184,.12);
+    }
+
+    .ai-card h4{
+      margin:0 0 10px;
+      font-size:15px;
+    }
+
+    .ai-card p{
+      color:#94a3b8;
+      line-height:1.7;
+      font-size:13px;
+    }
+
+    @media(max-width:1100px){
+
+      .narrative-grid{
+        grid-template-columns:1fr;
+      }
+
+      .ai-grid{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <!-- 顶部标题 -->
+
+    <section class="module">
+
+      <div class="module-title">
+        ALPHA MACRO DAILY
+      </div>
+
+      <div class="briefing-banner">
+
+        当前市场正在交易 AI 算力扩张与大型科技资本开支，
+        但长端美债收益率重新上行正在压制高估值资产估值扩张。
+
+      </div>
+
+      <div class="narrative-grid">
+
+        <div class="narrative-card">
+
+          <h3>市场情绪与资金流向</h3>
+
+          <p>
+            Long-only 资金继续净买入，
+            Hedge Fund 正在降低 Beta 敞口。
+          </p>
+
+        </div>
+
+        <div class="narrative-card">
+
+          <h3>行业主线轮动</h3>
+
+          <p>
+            AI 与半导体继续主导市场，
+            小盘扩散仍然有限。
+          </p>
+
+        </div>
+
+        <div class="narrative-card">
+
+          <h3>宏观风险</h3>
+
+          <p>
+            长端利率重新上行，
+            滞胀与财政风险重新定价。
+          </p>
+
+        </div>
+
+        <div class="narrative-card">
+
+          <h3>Gamma & Positioning</h3>
+
+          <p>
+            Dealer Gamma 仍偏正，
+            OPEX 前指数波动率受到压制。
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- 风险仪表盘 -->
+
+    <section class="module">
+
+      <div class="module-title">
+        MACRO RISK GAUGE
+      </div>
+
+      <div class="risk-orb">
+
+        <div class="risk-inner">
+
+          68
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- AI Thesis Engine -->
+
+    <section class="module">
+
+      <div class="module-title">
+        AI THESIS ENGINE
+      </div>
+
+      <div class="ai-grid">
+
+        <div class="ai-card">
+
+          <h4>Training</h4>
+
+          <p>
+            CUDA 生态依然主导训练市场。
+          </p>
+
+        </div>
+
+        <div class="ai-card">
+
+          <h4>Inference</h4>
+
+          <p>
+            ASIC 正在蚕食推理市场份额。
+          </p>
+
+        </div>
+
+        <div class="ai-card">
+
+          <h4>Data Center</h4>
+
+          <p>
+            电力与制冷开始成为 AI 扩张约束。
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- JS Libraries -->
+
+  <script type="module" src="./js/marketDrivers.js"></script>
+  <script type="module" src="./js/narrativeEngine.js"></script>
+  <script type="module" src="./js/liquidityEngine.js"></script>
+  <script type="module" src="./js/gammaEngine.js"></script>
+  <script type="module" src="./js/aiThesisEngine.js"></script>
+  <script type="module" src="./js/architectureWar.js"></script>
+  <script type="module" src="./js/translationCN.js"></script>
+
+</body>
+</html>
